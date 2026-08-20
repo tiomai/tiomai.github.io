@@ -36,3 +36,28 @@ Upload the entire folder unchanged to Netlify, Vercel, GitHub Pages, Cloudflare 
 ## Contact
 
 Demo enquiries use `exai@tiom.ai`.
+
+## Branding / social assets
+
+- `assets/og-cover.png` — 1200×630 Open Graph image used by the page metadata.
+- `assets/social-square.png` — 1200×1200 square social/press asset (not referenced by default in the HTML).
+- `assets/favicon.ico`, `favicon-16x16.png`, `favicon-32x32.png` — browser favicons.
+- `assets/apple-touch-icon.png` — 180×180 iOS home-screen icon.
+- `assets/android-chrome-192x192.png` and `android-chrome-512x512.png` — PWA/Android icons.
+- `site.webmanifest` — web app manifest referenced by `index.html`.
+
+
+## SEO / social sharing
+
+Production domain: `https://exai.kokomonster.com/`
+
+Included:
+- Open Graph and X/Twitter large-image metadata
+- Canonical + language alternate tags
+- JSON-LD SoftwareApplication schema
+- `robots.txt` and `sitemap.xml`
+- Web manifest + favicon / Apple / Android icon set
+- `assets/og-cover.png` (1200×630) as the canonical social preview
+- `assets/social-square.png` (1200×1200) for manual social posting
+
+Language URLs `?lang=en` and `?lang=zh` are supported by the same single-page build; the root URL still follows saved language, browser language, then English fallback.
