@@ -1,0 +1,15 @@
+/* Match the fixed-assessment question navigation. The rail and answered count
+   already communicate progress, so the separate top progress bar is redundant. */
+.tw-progress{display:none}
+.tw-workspace{grid-template-columns:76px minmax(0,1fr);min-height:calc(100vh - 76px)}
+.tw-rail{top:76px;width:76px;height:calc(100vh - 76px);padding:20px 16px 100px}
+.tw-rail>div{gap:8px}
+.tw-rail button{width:44px;height:44px}
+.tw-footer{left:76px;padding-right:max(28px,calc((100vw - 76px - 1240px)/2 + 28px));padding-left:max(28px,calc((100vw - 76px - 1240px)/2 + 28px))}
+
+@media(max-width:760px){
+  .tw-workspace{display:block;min-height:calc(100vh - 64px)}
+  .tw-rail{top:64px;width:100%;height:auto;padding:8px 12px}
+  .tw-rail button{width:40px;height:40px}
+  .tw-footer{left:0;padding:0 12px}
+}
