@@ -14,6 +14,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     user = data?.user || null;
   }
   if (emailField) emailField.textContent = user?.email || 'Signed-in account';
+  const displayName = user?.user_metadata?.display_name || user?.user_metadata?.name || user?.email?.split('@')[0];
+  if (displayName) document.querySelectorAll('.identity b,[data-profile-name]').forEach(node => { node.textContent = displayName; });
   if (!client) {
     message.textContent = 'Supabase client configuration is pending. This form is ready for staging integration.';
     message.className = 'account-message info';
@@ -53,4 +55,3 @@ window.addEventListener('DOMContentLoaded', async () => {
     submit.textContent = 'Update password';
   });
 });
-
