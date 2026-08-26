@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head><base href="/eval/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>EXAI Taiwan English Past Paper</title>
@@ -12,13 +12,13 @@
 <body>
   <main class="tw-player">
     <header class="tw-topbar">
-      <a class="tw-brand" href="student-practice-mockup.html"><img src="public/exai-assets/logo.svg" alt="EXAI"></a>
+      <a class="tw-brand" href="practice/"><img src="public/exai-assets/logo.svg" alt="EXAI"></a>
       <div class="tw-paper-title"><strong id="paperTitle">Loading past paper…</strong><span>English · Challenge Practice</span></div>
-      <div class="tw-tools"><span class="tw-save" id="saveState" hidden>Answers saved in this demo</span><div class="tw-timer" id="timerControl" aria-label="Time remaining" hidden><span>◷</span><b id="timer">01:40:00</b></div><a class="tw-back" href="student-practice-mockup.html">Back</a></div>
+      <div class="tw-tools"><span class="tw-save" id="saveState" hidden>Answers saved in this demo</span><div class="tw-timer" id="timerControl" aria-label="Time remaining" hidden><span>◷</span><b id="timer">01:40:00</b></div><a class="tw-back" href="practice/">Back</a></div>
     </header>
     <div class="tw-progress"><i id="progressBar"></i></div>
     <section class="tw-loading" id="loading"><b>Loading the paper…</b><span>Reading questions, passages and images from the selected year.</span></section>
-    <section class="tw-error" id="error" hidden><b>Unable to load this paper</b><span id="errorText"></span><a href="student-practice-mockup.html">Return to Practice</a></section>
+    <section class="tw-error" id="error" hidden><b>Unable to load this paper</b><span id="errorText"></span><a href="practice/">Return to Practice</a></section>
     <section class="tw-cover" id="cover" hidden>
       <p class="eyebrow">TAIWAN ENGLISH · CHALLENGE PRACTICE</p>
       <h1 id="coverTitle"></h1>
@@ -30,7 +30,7 @@
       </div>
       <section class="tw-cover-sections"><div><h2>Paper sections</h2><p>Question totals are read from this year’s source file.</p></div><div id="coverSections"></div></section>
       <section class="tw-cover-note"><b>Challenge rules</b><ul><li>Answers remain editable until final submission.</li><li>Unanswered questions receive no marks.</li><li>Correct answers and explanations appear only after submission.</li></ul></section>
-      <footer><a href="student-practice-mockup.html">Back to Practice</a><button id="startChallenge">Start Challenge</button></footer>
+      <footer><a href="practice/">Back to Practice</a><button id="startChallenge">Start Challenge</button></footer>
     </section>
     <section class="tw-workspace" id="workspace" hidden>
       <aside class="tw-rail"><p>QUESTIONS</p><div id="questionRail"></div></aside>
@@ -51,7 +51,7 @@
       </article>
     </section>
     <footer class="tw-footer" id="footer" hidden><span id="answeredCount">0 answered</span><div><button class="tw-secondary" id="previous">Previous</button><button class="tw-primary" id="next">Next question</button></div></footer>
-    <section class="tw-review" id="review" hidden><p class="eyebrow">CHALLENGE COMPLETE</p><h1 id="reviewTitle">Paper summary</h1><p id="reviewIntro"></p><div class="tw-review-stats" id="reviewStats"></div><div class="tw-review-list" id="reviewList"></div><div class="tw-review-actions"><a href="student-practice-mockup.html">Back to Practice</a><button id="reviewPaper">Review questions</button></div></section>
+    <section class="tw-review" id="review" hidden><p class="eyebrow">CHALLENGE COMPLETE</p><h1 id="reviewTitle">Paper summary</h1><p id="reviewIntro"></p><div class="tw-review-stats" id="reviewStats"></div><div class="tw-review-list" id="reviewList"></div><div class="tw-review-actions"><a href="practice/">Back to Practice</a><button id="reviewPaper">Review questions</button></div></section>
     <div class="tw-modal" id="submitModal" hidden><div><h2>Submit this Challenge?</h2><p id="submitCopy"></p><span>After submitting, answers cannot be changed. Correct answers and available explanations will be shown in review.</span><footer><button id="keepWorking">Keep working</button><button id="confirmSubmit">Submit Challenge</button></footer></div></div>
   </main>
   <script src="app/taiwan-paper-player.js"></script>

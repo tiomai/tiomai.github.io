@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded',()=>{
       const button=gate.querySelector('button');
       button.disabled=false;
       button.textContent=closed?'View paper':'Review answers';
-      button.onclick=()=>location.href=`student-assessment-taking-mockup.html?flow=paper&review=${closed?'paper':'result'}`;
+      button.onclick=()=>location.href=`assessment-player/?flow=paper&review=${closed?'paper':'result'}`;
     });
   };
   polishResults();

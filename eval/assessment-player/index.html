@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head><base href="/eval/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>EXAI — Assessment Player</title>
@@ -101,8 +101,8 @@ if(reviewMode){
   };
   options.onclick=null;options.oninput=null;cover.classList.add('hidden');reviewScreen.classList.add('hidden');workspace.classList.remove('hidden');footer.classList.remove('hidden');current=0;
   previous.onclick=()=>{if(current){current--;render()}};
-  next.onclick=()=>{if(current<questions.length-1){current++;render()}else location.href='student-results-mockup.html'};
-  quit.textContent='Back to Results';quit.onclick=()=>location.href='student-results-mockup.html';
+  next.onclick=()=>{if(current<questions.length-1){current++;render()}else location.href='results/'};
+  quit.textContent='Back to Results';quit.onclick=()=>location.href='results/';
   render();
 }
 </script>

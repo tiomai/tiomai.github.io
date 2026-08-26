@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head><base href="/eval/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sign in — EXAI</title>
@@ -30,7 +30,7 @@ body{margin:0;background:#f6f8ff;color:#191b24}
 .login-form{display:grid;gap:20px}
 .login-form label{font-size:15px;font-weight:700;display:grid;gap:9px}
 .login-form input{height:56px;border:1px solid #d8deea;border-radius:12px;padding:0 16px;font:inherit;font-size:17px}
-.password-field{position:relative}.password-field input{box-sizing:border-box;width:100%;padding-right:54px}.password-toggle{position:absolute;right:8px;top:8px;width:40px;height:40px!important;border:0!important;border-radius:9px!important;background:transparent!important;color:#697180!important;padding:9px!important}.password-toggle:hover{background:#eef3ff!important}.password-toggle svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8}.password-toggle.showing svg{color:#2863e8}.password-toggle.showing svg circle{fill:currentColor}
+.password-field{position:relative}.password-field input{box-sizing:border-box;width:100%;padding-right:54px}.password-toggle{position:absolute;right:8px;top:8px;width:40px;height:40px!important;border:0!important;border-radius:9px!important;background:transparent!important;color:#697180!important;padding:9px!important}.password-toggle:hover{background:#eef3ff!important}.password-toggle svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8}.password-toggle.showing svg{color:#2863e8}.password-toggle.showing svg circle{fill:currentColor}.password-field.is-loading .password-toggle{visibility:hidden}.password-field.is-loading::after{content:"";position:absolute;right:20px;top:20px;width:14px;height:14px;border:2px solid #d8e3ff;border-top-color:#3974f7;border-radius:50%;animation:login-spin .7s linear infinite}@keyframes login-spin{to{transform:rotate(360deg)}}
 .login-form input:focus{outline:3px solid #dce8ff;border-color:#3974f7}
 .login-form>button{height:56px;border:0;border-radius:12px;background:#3974f7;color:#fff;font:inherit;font-size:18px;font-weight:700;cursor:pointer}.login-form>button:disabled{opacity:.55}
 .login-message{min-height:24px;margin:0!important;font-size:15px!important;color:#c44141!important}

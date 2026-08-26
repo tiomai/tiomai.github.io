@@ -2,7 +2,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   const params=new URLSearchParams(location.search);
   if(params.has('review'))return;
   const timer=document.querySelector('.timer'),progress=document.querySelector('.progress');
-  const source=flow==='practice'?'student-practice-mockup.html':'student-assessment-mockup.html';
+  const source=flow==='practice'?'practice/':'assessments/';
   const activate=()=>{
     timer.style.visibility='visible';progress.style.visibility='visible';quit.textContent='Leave';
     quit.onclick=()=>leaveBackdrop.classList.add('open');showPlayer();

@@ -8,11 +8,11 @@ window.addEventListener('DOMContentLoaded',async()=>{
   const client=ready?window.supabase.createClient(config.url,config.publishableKey):null;
   if(!client){message.textContent='Sign-in connection is being configured for staging.';form.querySelectorAll('input,button').forEach(item=>item.disabled=true);return}
   const {data:{session}}=await client.auth.getSession();
-  if(session)location.replace('student-assessment-mockup.html');
+  if(session)location.replace('assessments/');
   form.addEventListener('submit',async event=>{
-    event.preventDefault();const submit=form.querySelector('button');submit.disabled=true;submit.textContent='Signing in…';message.textContent='';
+    event.preventDefault();const submit=form.querySelector('button[type="submit"]'),passwordField=form.querySelector('.password-field');submit.disabled=true;passwordField?.classList.add('is-loading');toggle.disabled=true;message.textContent='';
     const values=new FormData(form);const result=await client.auth.signInWithPassword({email:String(values.get('email')||'').trim(),password:String(values.get('password')||'')});
-    if(result.error){message.textContent='The email or password is incorrect.';submit.disabled=false;submit.textContent='Sign in';return}
-    location.replace('student-assessment-mockup.html');
+    if(result.error){message.textContent='The email or password is incorrect.';submit.disabled=false;toggle.disabled=false;passwordField?.classList.remove('is-loading');return}
+    location.replace('assessments/');
   });
 });
