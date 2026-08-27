@@ -67,3 +67,10 @@ button{font-size:13px}.search input,.search-field input,.ds-select-button{font-s
 .topbar>.school{display:none!important}.topbar>.ds-language{display:block;align-self:center;height:36px;margin:0 0 0 auto}.topbar>.ds-language .ds-select-button{margin:0}.topbar>.profile,.topbar>.user{display:flex;align-self:center;align-items:center;margin:0}
 @media(min-width:651px){.topbar{position:sticky!important;top:0!important;z-index:25!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;height:68px!important;min-height:68px!important;padding:0 38px!important}.topbar>.ds-language{margin-left:auto!important}}
 @media(max-width:650px){.topbar{position:fixed!important;top:0!important;right:8px!important;z-index:31!important;display:flex!important;align-items:center!important;justify-content:flex-end!important;height:58px!important;min-height:58px!important;padding:0!important}.topbar>.ds-language{margin-left:auto!important}}
+
+/* Assessment player owns its full-width header; keep it out of the app-shell nav rules. */
+.assessment-topbar{position:sticky!important;right:auto!important;z-index:25!important;display:grid!important;grid-template-columns:auto minmax(0,1fr) auto!important;align-items:center!important;justify-content:normal!important;gap:28px!important;width:100%!important;height:76px!important;min-height:76px!important;padding:0 36px!important;border-bottom:1px solid #e1e7f0!important;background:#fff!important;pointer-events:auto!important}
+.assessment-topbar .tools{justify-self:end;min-width:0}
+.backdrop{z-index:60!important}
+@media(max-width:850px){.assessment-topbar{gap:16px!important;padding-inline:20px!important}}
+@media(max-width:600px){.assessment-topbar{position:sticky!important;right:auto!important;grid-template-columns:auto minmax(0,1fr) auto!important;gap:10px!important;height:64px!important;min-height:64px!important;padding-inline:14px!important}.assessment-topbar .tools{display:flex;max-width:100%}.assessment-topbar .flow-select{min-width:0;max-width:112px}}
