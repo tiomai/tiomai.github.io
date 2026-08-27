@@ -36,15 +36,30 @@ addEventListener('DOMContentLoaded', () => {
   filters.forEach(filter => filter.addEventListener('change', updateDemoNumbers));
   if (filters.length) updateDemoNumbers();
 
+  document.querySelectorAll('.stacked-column').forEach(column=>{const values=(column.dataset.tip||'').match(/\d+/g)?.slice(-3).map(Number)||[];if(values.length){const total=values.reduce((sum,value)=>sum+value,0),label=document.createElement('strong');label.textContent=total;column.append(label)}});
+
+  const individualResults=document.querySelector('#individualResults');
+  if(individualResults&&!document.querySelector('#teacherPracticePerformance')){
+    const monthlyHeading=[...document.querySelectorAll('.teacher-section-head h2')].find(node=>node.textContent.trim()==='Monthly performance summary')?.closest('.teacher-section-head');
+    if(monthlyHeading){const overview=document.createElement('div');overview.className='teacher-student-overview';overview.innerHTML=`<section class="v2-panel"><h2>Score trend</h2><p>Monthly weighted score across completed work</p><div class="trend-chart"><svg viewBox="0 0 520 190" role="img" aria-label="Monthly score trend"><path class="axis" d="M35 20V155H505M35 88H505M35 20H505"/><path class="area" d="M35 155 L70 62 L138 72 L206 34 L274 88 L342 72 L410 62 L478 62 L478 155Z"/><path class="line" d="M70 62 L138 72 L206 34 L274 88 L342 72 L410 62 L478 62"/><text class="chart-label" x="5" y="24">100%</text><text class="chart-label" x="13" y="92">50%</text><text class="chart-label" x="60" y="176">Jan</text><text class="chart-label" x="128" y="176">Feb</text><text class="chart-label" x="196" y="176">Mar</text><text class="chart-label" x="264" y="176">Apr</text><text class="chart-label" x="332" y="176">May</text><text class="chart-label" x="400" y="176">Jun</text><text class="chart-label" x="468" y="176">Jul</text></svg></div></section><section class="v2-panel"><h2>Performance evidence</h2><div class="skill-list"><div class="skill-row"><strong>Completion</strong><div class="skill-track"><i style="width:91%"></i></div><span>91%</span></div><div class="skill-row"><strong>Activity rate</strong><div class="skill-track"><i style="width:94%"></i></div><span>94%</span></div><div class="skill-row"><strong>Weighted score</strong><div class="skill-track"><i style="width:75%"></i></div><span>75%</span></div></div></section>`;monthlyHeading.before(overview);const insight=document.createElement('section');insight.className='teacher-panel teacher-student-insight';insight.innerHTML=`<h2>AI performance insight</h2><p>Based on completed scored work in the selected period.</p><div class="ai-insight-grid"><article><small>PERFORMANCE SIGNAL</small><h3>Reading is currently strongest</h3><p>Grammar has enough scored evidence to recommend focused work on sentence structure and tense.</p></article><article><small>FOCUS NEXT</small><h3>Grammar</h3><p>Complete another targeted set to strengthen the evidence.</p></article><article><small>DATA CONFIDENCE</small><h3>Developing</h3><p>Recommendations improve as more scored questions are completed.</p></article></div>`;overview.after(insight)}
+    const section=document.createElement('section');section.id='teacherPracticePerformance';section.innerHTML=`<header class="teacher-section-head"><div><h2>Challenge practice performance</h2></div></header><div class="teacher-kpis"><article class="teacher-kpi"><small>COMPLETED PACKS</small><b>12</b><p>Previous 90 days</p></article><article class="teacher-kpi"><small>WEIGHTED AVERAGE</small><b>78%</b><p>Across completed timed packs</p></article><article class="teacher-kpi"><small>ACTIVITY RATE</small><b>86%</b><p><span class="change up">↑ 6%</span> from previous period</p></article></div><div class="teacher-panel"><h2>Practice skill evidence</h2><div class="skill-list"><div class="skill-row"><strong>Grammar</strong><div class="skill-track"><i style="width:82%"></i></div><span>82%</span></div><div class="skill-row"><strong>Reading</strong><div class="skill-track"><i style="width:76%"></i></div><span>76%</span></div><div class="skill-row"><strong>Listening</strong><div class="skill-track"><i style="width:69%"></i></div><span>69%</span></div></div></div>`;individualResults.closest('.teacher-table-wrap').after(section)
+  }
+
+  if(individualResults){
+    const monthlyHeading=[...document.querySelectorAll('.teacher-section-head h2')].find(node=>node.textContent.trim()==='Monthly performance summary')?.closest('.teacher-section-head'),monthlySummary=monthlyHeading?.nextElementSibling,overview=document.querySelector('.teacher-student-overview'),englishMatrix=document.querySelector('[data-subject-panel="english"]'),mathMatrix=document.querySelector('[data-subject-panel="math"]'),studentInsight=document.querySelector('.teacher-student-insight');
+    if(monthlySummary&&overview)monthlySummary.after(overview);
+    if(studentInsight){studentInsight.className='ai-insight-panel teacher-student-insight';studentInsight.innerHTML=`<header><span class="ai-badge">AI</span><div><h3>AI performance insight</h3><p>Based on completed scored work in the selected period.</p></div></header><div class="ai-insight-grid"><section><small>PERFORMANCE SIGNAL</small><b>Reading is currently strongest. Grammar has enough scored evidence to recommend focused work on sentence structure and tense.</b></section><section><small>FOCUS NEXT</small><b>Grammar</b><p>Complete another targeted set to strengthen the evidence and update this recommendation.</p></section><section><small>DATA CONFIDENCE</small><b>Developing</b><p>Recommendations become more reliable as more scored questions are completed.</p></section></div>`;(mathMatrix||englishMatrix)?.after(studentInsight)}
+  }
+
   const performancePeriod = document.querySelector('#teacherPerformancePeriod');
   if (performancePeriod) {
     const controls = performancePeriod.closest('.teacher-controls'); controls.style.position = 'relative';
-    const picker = document.createElement('div'); picker.className = 'calendar-popover'; picker.hidden = true;
+    const picker = document.createElement('div'); picker.className = 'calendar-popover performance-calendar'; picker.hidden = true;
     picker.innerHTML = '<div class="calendar-head"><b>August 2026</b><span>Select start and end dates</span></div><div class="calendar-grid"></div>';
     controls.append(picker); const grid = picker.querySelector('.calendar-grid'); let picks = [];
     grid.innerHTML = ['S','M','T','W','T','F','S', ...Array.from({length:31}, (_,i)=>i+1)].map((day,index)=>index<7?`<b>${day}</b>`:`<button data-day="${day}">${day}</button>`).join('');
     performancePeriod.addEventListener('change',()=>{picker.hidden=performancePeriod.value!=='Custom range'});
-    grid.addEventListener('click',event=>{const button=event.target.closest('[data-day]');if(!button)return;if(picks.length===2)picks=[];picks.push(Number(button.dataset.day));grid.querySelectorAll('button').forEach(dayButton=>{const day=Number(dayButton.dataset.day);dayButton.classList.toggle('range',picks.length===2&&day>=Math.min(...picks)&&day<=Math.max(...picks));dayButton.classList.toggle('edge',picks.includes(day))});if(picks.length===2){performancePeriod.options[3].text=`${Math.min(...picks)}–${Math.max(...picks)} Aug 2026`;setTimeout(()=>{picker.hidden=true},350)}});
+    grid.addEventListener('click',event=>{const button=event.target.closest('[data-day]');if(!button)return;if(picks.length===2)picks=[];picks.push(Number(button.dataset.day));grid.querySelectorAll('button').forEach(dayButton=>{const day=Number(dayButton.dataset.day);dayButton.classList.toggle('range',picks.length===2&&day>=Math.min(...picks)&&day<=Math.max(...picks));dayButton.classList.toggle('edge',picks.includes(day))});if(picks.length===2){const label=`${Math.min(...picks)}–${Math.max(...picks)} Aug 2026`;performancePeriod.options[3].text=label;performancePeriod.closest('.select-wrap')?.querySelector('.ds-select-button>span:first-child')?.replaceChildren(label);setTimeout(()=>{picker.hidden=true},350)}});
     const classSelect=document.querySelector('#teacherPerformanceClass'),subjectSelect=document.querySelector('#teacherPerformanceSubject');
     const updatePerformance=()=>{
       const all=classSelect.selectedIndex===0,total=all?60:20,periodFactor=[1,.96,1.04,.91][performancePeriod.selectedIndex]||1,subjectOffset=subjectSelect.selectedIndex?3:0;
@@ -54,6 +69,7 @@ addEventListener('DOMContentLoaded', () => {
       const classes=['l1','l2','l3','l4'],colors=['#f3b98f','#9fbdfb','#3974f7','#7854c7'];document.querySelector('#performanceComposition').innerHTML=counts.map((count,index)=>`<i class="${classes[index]}" style="width:${count/total*100}%"></i>`).join('');document.querySelector('#performanceDistribution').innerHTML=counts.map((count,index)=>`<div class="distribution-row"><span>${index===3?'Level 4+':`Level ${index+1}`}</span><div class="mini-track"><i style="width:${count/total*100}%;background:${colors[index]}"></i></div><b>${count} · ${Math.round(count/total*100)}%</b></div>`).join('');
     };
     [performancePeriod,classSelect,subjectSelect].forEach(select=>select.addEventListener('change',updatePerformance));updatePerformance();
+    document.addEventListener('click',event=>{if(!picker.hidden&&!picker.contains(event.target)&&event.target!==performancePeriod&&!performancePeriod.closest('.select-wrap')?.contains(event.target))picker.hidden=true});
   }
 
   const period = document.querySelector('#teacherResultsPeriod');
@@ -76,6 +92,7 @@ addEventListener('DOMContentLoaded', () => {
     document.querySelector('#teacherCalendar').hidden = period.value !== 'custom';
   };
   period.addEventListener('change', updatePeriod); updatePeriod();
+  document.addEventListener('click',event=>{const picker=document.querySelector('#teacherCalendar');if(!picker?.hidden&&!picker.contains(event.target)&&event.target!==period&&!period.closest('.select-wrap')?.contains(event.target))picker.hidden=true});
 
   const calendar = document.querySelector('#teacherCalendarGrid'); let selectedDays = [];
   calendar.innerHTML = ['S','M','T','W','T','F','S', ...Array.from({length:31}, (_,i)=>i+1)].map((day,index) => index < 7 ? `<b>${day}</b>` : `<button data-day="${day}">${day}</button>`).join('');
@@ -89,7 +106,7 @@ addEventListener('DOMContentLoaded', () => {
       dayButton.classList.toggle('edge', selectedDays.includes(day));
     });
     if (selectedDays.length === 2) {
-      period.options[3].text = `${Math.min(...selectedDays)}–${Math.max(...selectedDays)} Aug 2026`;
+      const label=`${Math.min(...selectedDays)}–${Math.max(...selectedDays)} Aug 2026`;period.options[3].text = label;period.closest('.select-wrap')?.querySelector('.ds-select-button>span:first-child')?.replaceChildren(label);
       setTimeout(() => { document.querySelector('#teacherCalendar').hidden = true; }, 350);
     }
   });

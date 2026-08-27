@@ -17,3 +17,14 @@ window.addEventListener('DOMContentLoaded',()=>{
     render=function(){reviewRender();const q=questions[current],buttons=[...options.querySelectorAll('.option')];buttons.forEach((button,index)=>{button.classList.remove('review-correct','review-wrong');if(index===q.correct)button.classList.add('review-correct');if(q.answer===index&&q.answer!==q.correct)button.classList.add('review-wrong')});const correct=q.answer===q.correct;if(reviewMode==='result'){feedbackPanel.classList.toggle('result-correct',correct);feedbackPanel.classList.toggle('result-incorrect',!correct);feedbackPanel.querySelector(':scope>b').textContent=correct?'Correct':'Incorrect';if(correct){const grid=feedbackPanel.querySelector('.feedback-grid');if(grid)grid.innerHTML=`<div><small>YOUR ANSWER</small><strong>${q.options?.[q.answer]||q.answer}</strong></div>`}}};render();
   }
 });
+
+/* Submission exits return to the page that launched the experience. */
+window.addEventListener('DOMContentLoaded',()=>{
+  if(typeof reviewMode!=='undefined'&&reviewMode)return;
+  const entry=()=>flow==='practice'?'practices/':'assessments/';
+  const finish=async()=>{const button=document.querySelector('.submit-paper')||next;button.disabled=true;button.textContent='Saving…';await window.EXAI_SUBMISSIONS?.submit({packSlug:new URLSearchParams(location.search).get('pack')||`english-${flow}`,mode:flow==='practice'?'leisure':'assessment',responses:questions.map(question=>question.answer),questions});location.href=entry()};
+  document.querySelector('.submit-paper').onclick=()=>openSubmit('paper',finish);
+  if(typeof advanceAdaptive==='function')advanceAdaptive=()=>{if(current<questions.length-1){current++;render()}else finish()};
+  const priorNext=next.onclick;
+  next.onclick=event=>{if(flow==='practice'&&current===questions.length-1&&questions[current].submitted){finish();return}priorNext?.call(next,event)};
+});

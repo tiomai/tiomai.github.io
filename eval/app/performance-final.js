@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.access-note').forEach(note=>{if(note.textContent.includes('School students see'))note.remove()});
   const baseRender=renderPerformance;let comparisonPeriod='30';
   const comparisonLabel=()=>comparisonPeriod==='term'?'Previous term':comparisonPeriod==='90'?'Previous 90 days':'Previous 30 days';
   const previousValue=(current,index)=>{const adjustment=comparisonPeriod==='term'?[9,-3,5,-7,4,2][index%6]:comparisonPeriod==='90'?[5,-1,3,-4,2,1][index%6]:[7,4,-3,6,2,-2][index%6];return Math.max(0,Math.min(100,current-adjustment))};

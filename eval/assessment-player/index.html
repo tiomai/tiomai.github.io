@@ -83,7 +83,7 @@ const promptSafeRender=render;render=function(){promptSafeRender();document.quer
 const reviewMode=new URLSearchParams(location.search).get('review');
 if(reviewMode){
   const teacherView=new URLSearchParams(location.search).get('viewer')==='teacher';
-  const reviewEntrance=teacherView?'teacher-performance/':'results/';
+  const reviewEntrance=teacherView?'teacher/students/student/':'results/';
   const baseRender=render;
   questions.forEach((q,i)=>{q.answer=reviewMode==='result'?(q.kind==='short'?(i===7?'Cities need several coordinated measures.':''):(i+1)%q.options.length):null;q.submitted=true});
   render=function(){
@@ -109,5 +109,5 @@ if(reviewMode){
 }
 </script>
 <script src="app/player-launch-state.js"></script>
-<script src="app/assessment-taking-final.js"></script><script src="app/english-pack-content.js"></script><script src="app/assessment-media-fix.js"></script></body>
+<script src="app/supabase-config.js"></script><script src="app/submission-client.js"></script><script src="app/assessment-taking-final.js"></script><script src="app/english-pack-content.js"></script><script src="app/assessment-media-fix.js"></script></body>
 </html>
