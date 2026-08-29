@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-size="medium">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UI Component Playbook</title>
+<link rel="stylesheet" href="ui-components.css">
+</head>
+<body>
+<script defer src="playbook-current-components.js"></script>
+<script defer src="playbook-tooltips.js"></script>
+<header class="top">
+<div>
+<span class="eyebrow">EXAI DESIGN SYSTEM</span>
+<h1>UI component playbook</h1>
+<p>Canonical responsive reference for every shared student and teacher component.</p>
+</div>
+<div class="settings">
+<label>Theme<select id="theme">
+<option value="light">Light</option>
+<option value="dark">Dark</option>
+</select>
+</label>
+<label>Text size<select id="size">
+<option value="small">Small</option>
+<option value="medium" selected>Medium</option>
+<option value="large">Large</option>
+</select>
+</label>
+</div>
+</header>
+<main>
+<section>
+<h2>Foundations</h2>
+<div class="swatches">
+<article>
+<i class="brand">
+</i>
+<b>Brand</b>
+<code>#3974F7</code>
+</article>
+<article>
+<i class="success">
+</i>
+<b>Success</b>
+<code>#338160</code>
+</article>
+<article>
+<i class="warning">
+</i>
+<b>Warning</b>
+<code>#B86027</code>
+</article>
+<article>
+<i class="danger">
+</i>
+<b>Danger</b>
+<code>#D44C4C</code>
+</article>
+<article>
+<i class="surface">
+</i>
+<b>Surface</b>
+<code>Theme token</code>
+</article>
+</div>
+<div class="type">
+<p class="display">Display / Large</p>
+<h3>Heading / Medium</h3>
+<p>Body / Medium — Clear interface copy for learning and assessment workflows.</p>
+<small>Label / Small</small>
+</div>
+</section>
+<section>
+<h2>Actions and inputs</h2>
+<div class="row">
+<button class="primary">Primary action</button>
+<button>Secondary action</button>
+<button class="quiet">Quiet action</button>
+<button disabled>Disabled</button>
+</div>
+<div class="form">
+<label>Search<span class="search-control">
+<i aria-hidden="true">
+</i>
+<input placeholder="Search assessments">
+</span>
+</label>
+<label>Subject<div class="component-select" id="componentSelect">
+<button type="button" aria-haspopup="listbox" aria-expanded="false">
+<span>All subjects</span>
+<i>
+</i>
+</button>
+<div role="listbox">
+<button class="selected" data-value="All subjects">All subjects</button>
+<button data-value="English">English</button>
+<button data-value="Math">Math</button>
+</div>
+</div>
+</label>
+<label>Password<input type="password" value="password">
+</label>
+</div>
+</section>
+<section>
+<h2>Status and feedback</h2>
+<div class="row">
+<span class="badge info">IN PROGRESS</span>
+<span class="badge good">RESULT AVAILABLE</span>
+<span class="badge warn">AWAITING REVIEW</span>
+<span class="badge bad">ACTION REQUIRED</span>
+<span class="awaiting-note">Being reviewed</span>
+</div>
+<div class="notice">
+<b>Information</b>
+<p>Use notices for concise context, not permanent page content.</p>
+</div>
+</section>
+<section>
+<h2>Cards and data</h2>
+<div class="cards">
+<article class="card">
+<small>COMPLETED</small>
+<strong>33 of 58</strong>
+<p>57% of assigned assessments</p>
+</article>
+<article class="card">
+<small>WEIGHTED AVERAGE</small>
+<strong>74%</strong>
+<p>Across scored questions</p>
+</article>
+<article class="card">
+<small>CURRENT LEVEL</small>
+<strong>Level 2</strong>
+<p>Backend-calculated proficiency</p>
+</article>
+</div>
+<article class="result">
+<div>
+<span class="badge good">RESULT AVAILABLE</span>
+<h3>DSE English — Reading &amp; Listening</h3>
+<p>English · Submitted 18 Aug 2026</p>
+</div>
+<strong>79%</strong>
+<button class="primary">View result</button>
+</article>
+</section>
+<section>
+<h2>Test-taking components</h2>
+<div class="test-shell">
+<header>
+<div>
+<small>ASSESSMENT</small>
+<b>DSE English — Reading &amp; Listening</b>
+</div>
+<span class="test-timer">38:42</span>
+</header>
+<div class="test-progress">
+<span>Question 3 of 10</span>
+<i>
+<b style="width:30%">
+</b>
+</i>
+<span>2 answered</span>
+</div>
+<div class="question-layout">
+<aside class="question-rail" aria-label="Question navigation">
+<button class="done">1</button>
+<button class="done">2</button>
+<button class="current">3</button>
+<button>4</button>
+<button class="bookmarked">5</button>
+</aside>
+<article class="question-card">
+<small>MULTIPLE CHOICE</small>
+<h3>Why can dense neighbourhoods remain warmer after sunset?</h3>
+<p>Choose the best answer.</p>
+<div class="answers">
+<button>
+<i>
+</i>Buildings release stored heat slowly</button>
+<button class="selected">
+<i>
+</i>Trees produce heat after dark</button>
+<button>
+<i>
+</i>Traffic increases in the evening</button>
+</div>
+<div class="test-actions">
+<button>Bookmark</button>
+<button class="primary">Next question →</button>
+</div>
+</article>
+</div>
+<div class="audio-control">
+<button aria-label="Play audio">▶</button>
+<div>
+<b>Listening audio</b>
+<i>
+<span style="width:38%">
+</span>
+</i>
+</div>
+<span>0:07 / 0:18</span>
+</div>
+<div class="feedback-sample">
+<span class="badge good">CORRECT</span>
+<div>
+<small>EXPLANATION</small>
+<p>The selected response follows the key evidence in the source material.</p>
+</div>
+</div>
+</div>
+</section>
+<section>
+<h2>Student recommendation and activity cards</h2>
+<p class="section-note">Assessments, practice packs, recommendations and saved revision.</p>
+<article class="recommended-card">
+<header>
+<span>RECOMMENDED NEXT</span>
+<em>Due in 2 days</em>
+</header>
+<div class="recommended-body">
+<i>∑</i>
+<div>
+<small>MATH · IN PROGRESS</small>
+<h3>Continue Math S4</h3>
+<p>About 26 min remaining · Last opened yesterday</p>
+</div>
+<div class="recommended-action">
+<b>35%</b>
+<span>
+<i style="width:35%">
+</i>
+</span>
+<button class="primary">Continue assessment →</button>
+</div>
+</div>
+</article>
+<div class="assessment-examples">
+<article class="assessment-item">
+<i>Aa</i>
+<div>
+<span class="badge info">NOT STARTED</span>
+<h3>DSE English Reading</h3>
+<p>50 min · Text-based reading</p>
+</div>
+<div>
+<small>DEADLINE</small>
+<b>31 Aug</b>
+</div>
+<button>Start →</button>
+</article>
+<article class="pack-card">
+<i>△</i>
+<div>
+<h3>Trigonometry I</h3>
+<p>10 questions · approximately 30 minutes</p>
+</div>
+<button>Start Challenge</button>
+</article>
+<article class="revision-card">
+<span class="badge info">SAVED</span>
+<h3>Equation of a straight line</h3>
+<p>Your answer, correct answer and explanation are available for revision.</p>
+<button>Review question</button>
+</article>
+</div>
+</section>
+<section>
+<h2>Practice mode selection</h2>
+<p class="section-note">Selectable card pair and active/inactive states.</p>
+<div class="mode-playbook">
+<article class="mode-example active">
+<header>
+<div>
+<span class="mode-label">TIMED</span>
+<h3>Challenge mode</h3>
+</div>
+<i>◷</i>
+</header>
+<p>See how you perform under test conditions. Your score is revealed when the pack is complete.</p>
+<ul>
+<li>Timer shown throughout the pack</li>
+<li>Answers and explanations after finishing</li>
+<li>Completed score saved in Results</li>
+</ul>
+<footer>
+<button class="primary">Choose Challenge</button>
+<b>Selected</b>
+</footer>
+</article>
+<article class="mode-example">
+<header>
+<div>
+<span class="mode-label">UNTIMED</span>
+<h3>Leisure mode</h3>
+</div>
+<i>▤</i>
+</header>
+<p>Take your time and learn from every question with feedback as you go.</p>
+<ul>
+<li>No timer or time pressure</li>
+<li>Answer and explanation after each question</li>
+<li>Leave whenever you need to</li>
+</ul>
+<footer>
+<button>Choose Leisure</button>
+</footer>
+</article>
+</div>
+</section>
+<section>
+<h2>Performance and analytics components</h2>
+<div class="analytics-grid">
+<article class="chart-card">
+<h3>Score trend</h3>
+<p>Monthly weighted score across completed work</p>
+<div class="mini-chart">
+<i style="height:52%">
+</i>
+<i style="height:46%">
+</i>
+<i style="height:76%">
+</i>
+<i style="height:38%">
+</i>
+<i style="height:51%">
+</i>
+<i style="height:61%">
+</i>
+<i style="height:60%">
+</i>
+</div>
+</article>
+<article class="skill-card">
+<h3>Skill row</h3>
+<div>
+<b>Reading</b>
+<span>
+<i style="width:83%">
+</i>
+</span>
+<strong>83%</strong>
+</div>
+<div>
+<b>Grammar</b>
+<span>
+<i class="warning-bar" style="width:44%">
+</i>
+</span>
+<strong>44%</strong>
+</div>
+</article>
+<article class="insight-card">
+<span>AI</span>
+<div>
+<small>PERFORMANCE SIGNAL</small>
+<h3>Reading is currently strongest</h3>
+<p>Grammar has enough evidence to recommend focused work next.</p>
+</div>
+</article>
+</div>
+<div class="monthly-demo">
+<article class="current">
+<small>LATEST · JUL</small>
+<b>Level 3</b>
+<span>8/8 completed<br>75% score</span>
+</article>
+<article>
+<small>JUN</small>
+<b>Level 3</b>
+<span>9/10 completed<br>70% score</span>
+</article>
+<article>
+<small>MAY</small>
+<b>Level 3</b>
+<span>6/8 completed<br>67% score</span>
+</article>
+<article>
+<small>APR</small>
+<b>Level 3</b>
+<span>8/8 completed<br>76% score</span>
+</article>
+</div>
+</section>
+<section>
+<h2>Teacher data components</h2>
+<p class="section-note">School/class KPI, table, progress, distribution and student row patterns.</p>
+<div class="teacher-samples">
+<article class="teacher-kpi-sample">
+<small>ACTIVE STUDENTS</small>
+<b>54</b>
+<p>Previous 90 days</p>
+</article>
+<article class="teacher-kpi-sample">
+<small>OVERALL COMPLETION</small>
+<b>82%</b>
+<p>Across visible classes</p>
+</article>
+<article class="distribution-card">
+<h3>Student level distribution</h3>
+<div>
+<span>Level 3</span>
+<i>
+<b style="width:63%">
+</b>
+</i>
+<strong>38 · 63%</strong>
+</div>
+<div>
+<span>Level 2</span>
+<i>
+<b style="width:30%">
+</b>
+</i>
+<strong>18 · 30%</strong>
+</div>
+</article>
+</div>
+<div class="table-sample">
+<div class="table-head">
+<span>STUDENT</span>
+<span>CLASS</span>
+<span>ACTIVITY</span>
+<span>SCORE</span>
+</div>
+<div class="table-row">
+<span>
+<b>Ava Lau</b>
+<small>ST26001</small>
+</span>
+<span>Class 1A</span>
+<span class="positive">↑ 94%</span>
+<span>
+<b>84%</b>
+</span>
+</div>
+<div class="table-row">
+<span>
+<b>Noah Lee</b>
+<small>ST26004</small>
+</span>
+<span>Class 1B</span>
+<span class="negative">↓ 66%</span>
+<span>
+<b>69%</b>
+</span>
+</div>
+</div>
+</section>
+<section>
+<h2>Navigation and account</h2>
+<div class="navigation-samples">
+<aside class="mini-sidebar">
+<b>EXAI</b>
+<small>HOME</small>
+<a class="active">Assessments</a>
+<a>Practices</a>
+<a>Results</a>
+<a>Performance</a>
+</aside>
+<div class="nav-content">
+<div class="mini-topbar">
+<span>KOKO Secondary School</span>
+<button>English⌄</button>
+<button>Account⌄</button>
+</div>
+<div class="breadcrumbs">
+<a>Classes</a>
+<span>›</span>
+<a>Class 1A</a>
+<span>›</span>
+<b>Ava Lau</b>
+</div>
+<div class="account-menu-sample">
+<button>Profile</button>
+<button>Log out</button>
+</div>
+</div>
+</div>
+</section>
+<section>
+<h2>Forms, profile and security</h2>
+<div class="profile-grid">
+<article class="profile-card">
+<div class="avatar">AL</div>
+<div>
+<h3>Ava Lau</h3>
+<p>ava@example.edu · Student · Class 1A</p>
+</div>
+<div class="notice">
+<b>Account access</b>
+<p>Roles and school membership are managed by an administrator.</p>
+</div>
+</article>
+<form class="security-form">
+<label>Current password<input type="password" value="password">
+</label>
+<label>New password<input type="password" placeholder="At least 8 characters">
+</label>
+<label>Confirm new password<input type="password" placeholder="Repeat new password">
+</label>
+<button class="primary" type="button">Update password</button>
+<span class="form-message">Password requirements and inline validation appear here.</span>
+</form>
+</div>
+</section>
+<section>
+<h2>System and content states</h2>
+<div class="state-grid">
+<article class="empty-state">
+<b>No assessments found</b>
+<p>Try another subject or search.</p>
+</article>
+<article class="loading-state">
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<span>Loading assessment…</span>
+</article>
+<article class="error-state">
+<span class="badge bad">ERROR</span>
+<b>Unable to load this paper</b>
+<button>Try again</button>
+</article>
+<article>
+<span class="badge warn">AWAITING REVIEW</span>
+<h3>Teacher review pending</h3>
+<p>Your result will appear after it is released.</p>
+</article>
+</div>
+</section>
+<section>
+<h2>Overlays and transient surfaces</h2>
+<div class="overlay-grid">
+<article class="drawer-sample">
+<header>
+<div>
+<small>ASSESSMENT RESULT</small>
+<h3>DSE English Reading</h3>
+</div>
+<button>×</button>
+</header>
+<div>
+<strong>79%</strong>
+<span>OVERALL RESULT</span>
+</div>
+<button class="primary">Review answers</button>
+</article>
+<article class="modal-sample">
+<h3>Submit assessment?</h3>
+<p>2 questions are unanswered. Answers cannot be changed after submission.</p>
+<footer>
+<button>Return to review</button>
+<button class="primary">Submit assessment</button>
+</footer>
+</article>
+<article class="calendar-sample">
+<header>
+<b>August 2026</b>
+<small>Select start and end dates</small>
+</header>
+<div>
+<b>S</b>
+<b>M</b>
+<b>T</b>
+<b>W</b>
+<b>T</b>
+<b>F</b>
+<b>S</b>
+<span>9</span>
+<span class="range">10</span>
+<span class="range">11</span>
+<span class="range">12</span>
+<span class="range">13</span>
+<span class="range">14</span>
+<span>15</span>
+</div>
+</article>
+</div>
+</section>
+<section>
+<h2>Navigation, filters and pagination</h2>
+<nav class="tabs">
+<button class="active">School assessments</button>
+<button>Challenge practice</button>
+</nav>
+<div class="filter-tabs-playbook">
+<button class="active">All assigned <span>5</span>
+</button>
+<button>Due soon <span>3</span>
+</button>
+<button>In progress <span>1</span>
+</button>
+</div>
+<div class="pagination">
+<button disabled>Previous</button>
+<span>1–10 of 24</span>
+<button>Next</button>
+</div>
+</section>
+</main>
+<aside class="supplemental-playbook">
+<section>
+<h2>Additional test-taking states</h2>
+<div class="advanced-test-grid">
+<article class="cover-sample">
+<span class="eyebrow">ASSESSMENT</span>
+<h3>DSE English — Reading &amp; Listening</h3>
+<p>Complete the paper before the timer ends.</p>
+<div>
+<b>42 minutes</b>
+<span>The paper submits automatically when time ends.</span>
+</div>
+<div>
+<b>10 questions</b>
+<span>Move between questions and revisit answers.</span>
+</div>
+<button class="primary">Start assessment</button>
+</article>
+<article class="math-sample">
+<span class="badge info">QUESTION 4 OF 10</span>
+<h3>Solve for the gradient of the line.</h3>
+<div class="formula">m = (y₂ − y₁) ÷ (x₂ − x₁)</div>
+<div class="diagram">y<br>│&nbsp;&nbsp;&nbsp;&nbsp;╱<br>│&nbsp;&nbsp;╱<br>└──── x</div>
+<button>Show formula reference</button>
+</article>
+<article class="review-sample">
+<h3>Review your answers</h3>
+<div>
+<span>1</span>
+<p>
+<b>Question 1</b>
+<small>Answer: Buildings release stored heat slowly</small>
+</p>
+<em class="badge good">ANSWERED</em>
+</div>
+<div>
+<span>2</span>
+<p>
+<b>Question 2</b>
+<small>No answer submitted</small>
+</p>
+<em class="badge warn">UNANSWERED</em>
+</div>
+<footer>
+<button>Return to paper</button>
+<button class="primary">Submit assessment</button>
+</footer>
+</article>
+</div>
+</section>
+<section>
+<h2>Specialised data visualisations</h2>
+<div class="visual-grid">
+<article>
+<h3>Assessment activity</h3>
+<div class="stacked-bars">
+<i>
+<b style="height:55%">
+</b>
+<span style="height:25%">
+</span>
+</i>
+<i>
+<b style="height:68%">
+</b>
+<span style="height:18%">
+</span>
+</i>
+<i>
+<b style="height:73%">
+</b>
+<span style="height:14%">
+</span>
+</i>
+<i>
+<b style="height:82%">
+</b>
+<span style="height:10%">
+</span>
+</i>
+</div>
+<p>Completed and open assessments by month</p>
+</article>
+<article>
+<h3>Level composition</h3>
+<div class="level-strip">
+<i style="width:18%">
+</i>
+<i style="width:30%">
+</i>
+<i style="width:42%">
+</i>
+<i style="width:10%">
+</i>
+</div>
+<div class="legend-row">
+<span>Level 1</span>
+<span>Level 2</span>
+<span>Level 3</span>
+<span>Level 4+</span>
+</div>
+</article>
+<article>
+<h3>Student heat map</h3>
+<div class="heat-map">
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+</div>
+<p>Compact roster-level distribution pattern</p>
+</article>
+</div>
+</section>
+</aside>
+<script>theme.onchange=e=>document.documentElement.dataset.theme=e.target.value;size.onchange=e=>document.documentElement.dataset.size=e.target.value;const componentSelect=document.querySelector('#componentSelect'),selectButton=componentSelect.firstElementChild;selectButton.onclick=()=>{const open=componentSelect.classList.toggle('open');selectButton.setAttribute('aria-expanded',open)};componentSelect.querySelectorAll('[data-value]').forEach(option=>option.onclick=()=>{selectButton.firstElementChild.textContent=option.dataset.value;componentSelect.querySelector('.selected')?.classList.remove('selected');option.classList.add('selected');componentSelect.classList.remove('open');selectButton.setAttribute('aria-expanded','false')});</script>
+</body>
+</html>
