@@ -4,7 +4,15 @@ window.addEventListener('DOMContentLoaded',()=>{
   const title=document.querySelector('.section-title');if(title)title.textContent='School assessment history';
   document.querySelector('.summary')?.classList.add('results-summary');
   document.querySelector('.challenge-summary')?.classList.add('results-summary');
-  const decorateReviewState=()=>document.querySelectorAll('.awaiting-note').forEach(note=>note.textContent='Being reviewed');
+  const decorateReviewState=()=>{
+    document.querySelectorAll('.awaiting-note').forEach(note=>note.textContent='Being reviewed');
+    document.querySelectorAll('.result .mobile-meta').forEach(meta=>{
+      const sourceStatus=meta.closest('.result')?.querySelector('.field .status');
+      if(!sourceStatus)return;
+      meta.className=`mobile-status status ${sourceStatus.classList.contains('review')?'review':'available'}`;
+      meta.textContent=sourceStatus.textContent;
+    });
+  };
   decorateReviewState();
   if(typeof render==='function'){const baseRender=render;render=function(){baseRender();decorateReviewState()}}
   document.querySelector('#results')?.addEventListener('click',event=>{
