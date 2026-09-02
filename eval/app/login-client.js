@@ -3,6 +3,9 @@ window.addEventListener('DOMContentLoaded',async()=>{
   if(password&&toggle)toggle.addEventListener('click',()=>{const showing=password.type==='text';password.type=showing?'password':'text';toggle.classList.toggle('showing',!showing);toggle.setAttribute('aria-label',showing?'Show password':'Hide password');toggle.title=showing?'Show password':'Hide password'});
   const form=document.querySelector('#loginForm'),message=document.querySelector('#loginMessage');
   if(!form||!message)return;
+  if(location.search){history.replaceState(null,'',location.pathname+location.hash)}
+  let submitHandler=null;
+  form.addEventListener('submit',event=>{event.preventDefault();submitHandler?.()});
   const config=window.EXAI_SUPABASE_CONFIG||{};
   const ready=Boolean(window.supabase?.createClient&&config.url&&config.publishableKey);
   const client=ready?window.supabase.createClient(config.url,config.publishableKey):null;
@@ -15,10 +18,10 @@ window.addEventListener('DOMContentLoaded',async()=>{
   };
   const {data:{session}}=await client.auth.getSession();
   if(session)location.replace(await destinationFor(session.user));
-  form.addEventListener('submit',async event=>{
-    event.preventDefault();const submit=form.querySelector('button[type="submit"]'),passwordField=form.querySelector('.password-field');submit.disabled=true;passwordField?.classList.add('is-loading');toggle.disabled=true;message.textContent='';
+  submitHandler=async()=>{
+    const submit=form.querySelector('button[type="submit"]'),passwordField=form.querySelector('.password-field');submit.disabled=true;passwordField?.classList.add('is-loading');toggle.disabled=true;message.textContent='';
     const values=new FormData(form);const result=await client.auth.signInWithPassword({email:String(values.get('email')||'').trim(),password:String(values.get('password')||'')});
     if(result.error){message.textContent='The email or password is incorrect.';submit.disabled=false;toggle.disabled=false;passwordField?.classList.remove('is-loading');return}
     location.replace(await destinationFor(result.data.user));
-  });
+  };
 });
