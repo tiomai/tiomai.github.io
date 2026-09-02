@@ -9,6 +9,20 @@
     if(!window.supabase?.createClient||!config.url||!config.publishableKey)return null;
     return backendClient||(backendClient=window.supabase.createClient(config.url,config.publishableKey));
   };
+  const accountIdentity=async key=>{
+    if(key==='tiom')return {displayName:'Tiom',email:'tiom@tiom.ai'};
+    if(key==='t1')return {displayName:'t1',email:'t1@tiom.ai'};
+    const client=backend();
+    if(client){
+      const {data:{user}}=await client.auth.getUser();
+      if(user){
+        const {data:profile}=await client.from('profiles').select('display_name').eq('id',user.id).maybeSingle();
+        const displayName=profile?.display_name||user.user_metadata?.display_name||user.user_metadata?.name||user.email?.split('@')[0]||'Account';
+        return {displayName,email:user.email||'signed-in account',id:user.id};
+      }
+    }
+    return {displayName:'Account',email:'signed-in account'};
+  };
   const contexts={
     tiom:[
       {membershipId:'mem-exai-admin',organisationId:'org-exai',organisationName:'EXAI',role:'administrator',classes:[],capabilities:{canViewStudents:true,canViewResults:true,canAssign:true,canReview:true}},
@@ -35,8 +49,8 @@
     async get(){
       const key=userKey(),allContexts=contexts[key]||contexts.t1,availableContexts=allContexts.filter(item=>!['administrator','school_admin'].includes(item.role)),stored=localStorage.getItem(`exai_active_membership_${key}`),activeContext=availableContexts.find(item=>item.membershipId===stored)||availableContexts[0];
       const accountCapabilities=await accountResetCapabilities.get({organisationId:activeContext.organisationId});
-      const identity=key==='tiom'?{displayName:'Tiom',email:'tiom@tiom.ai'}:key==='t1'?{displayName:'t1',email:'t1@tiom.ai'}:{displayName:'Account',email:'signed-in account'};
-      return wait({user:{id:`demo-${key}`,...identity},activeContext,availableContexts,accountCapabilities,branding:branding[activeContext.organisationId]||branding['org-exai'],locale:localStorage.getItem('exai_locale')||'en'});
+      const identity=await accountIdentity(key);
+      return wait({user:{id:identity.id||`demo-${key}`,...identity},activeContext,availableContexts,accountCapabilities,branding:branding[activeContext.organisationId]||branding['org-exai'],locale:localStorage.getItem('exai_locale')||'en'});
     },
     async switchContext(membershipId){
       const current=await this.get(),next=current.availableContexts.find(item=>item.membershipId===membershipId);if(!next)throw new Error('Account context is no longer available.');
