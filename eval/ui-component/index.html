@@ -1,15 +1,18 @@
 <!doctype html>
 <html lang="en" data-theme="light" data-size="medium">
-<head>
+<head><base href="/eval/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UI Component Playbook</title>
-<link rel="stylesheet" href="ui-components.css">
+<link rel="stylesheet" href="/eval/ui-component/ui-components.css">
+<link rel="stylesheet" href="/eval/ui-component/product-parity.css">
 </head>
 <body>
-<script defer src="playbook-current-components.js"></script>
-<script defer src="playbook-tooltips.js"></script>
+<script defer src="/eval/ui-component/playbook-current-components.js"></script>
+<script defer src="/eval/ui-component/playbook-tooltips.js"></script>
+<script defer src="/eval/ui-component/playbook-product-parity.js"></script>
 <header class="top">
+<a class="catalogue-link" href="/eval/question-layout/">Question layout catalogue ↗</a>
 <div>
 <span class="eyebrow">EXAI DESIGN SYSTEM</span>
 <h1>UI component playbook</h1>
@@ -166,6 +169,7 @@
 </div>
 <div class="question-layout">
 <aside class="question-rail" aria-label="Question navigation">
+<small>No.</small>
 <button class="done">1</button>
 <button class="done">2</button>
 <button class="current">3</button>
@@ -191,10 +195,11 @@
 <button>Bookmark</button>
 <button class="primary">Next question →</button>
 </div>
+<button class="question-id-sample" title="Copy question ID">x45Gs7</button>
 </article>
 </div>
 <div class="audio-control">
-<button aria-label="Play audio">▶</button>
+<button aria-label="Stop audio">■</button>
 <div>
 <b>Listening audio</b>
 <i>
@@ -202,15 +207,17 @@
 </span>
 </i>
 </div>
-<span>0:07 / 0:18</span>
+<span><b>1 play remaining</b> · Selecting Play immediately uses one play. The recording can be stopped, but not paused.</span>
 </div>
 <div class="feedback-sample">
-<span class="badge good">CORRECT</span>
+<span class="badge bad">INCORRECT</span>
 <div>
-<small>EXPLANATION</small>
-<p>The selected response follows the key evidence in the source material.</p>
+<small>YOUR ANSWER</small><p class="wrong-answer-sample">14</p>
+<small>CORRECT ANSWER</small><p class="correct-answer-sample">12</p>
+<small>EXPLANATION</small><p>For a regular polygon, all exterior angles total 360°. Divide 360° by the given 30° exterior angle: n = 360° ÷ 30° = 12.</p>
 </div>
 </div>
+<div class="test-cover-variants"><article><small>SCREENING ASSESSMENT</small><b>One question at a time</b><p>Submitted answers are final. The assessment moves on when time runs out.</p></article><article><small>LEISURE PRACTICE</small><b>Feedback as you go</b><p>Untimed practice reveals the answer and explanation after each submission.</p></article><article><small>CHALLENGE PRACTICE</small><b>Complete the timed pack</b><p>Answers and explanations are revealed after the completed pack.</p></article></div>
 </div>
 </section>
 <section>
@@ -313,6 +320,7 @@
 </section>
 <section>
 <h2>Performance and analytics components</h2>
+<p class="component-contract">One aggregate view model drives both student and teacher performance: metrics, monthly summary, trend, English radar or Math topic bars, insights, and data confidence. Teacher-only assessment results are capability gated. Render every returned record; empty and failed sections replace prior content.</p>
 <div class="analytics-grid">
 <article class="chart-card">
 <h3>Score trend</h3>
@@ -365,12 +373,12 @@
 <article class="topic-insight-component">
 <header><span>AI</span><div><h3>AI performance insight</h3><p>Open a topic to see the detailed analysis behind its evaluation.</p></div><span class="playbook-mastery-help">How topic mastery works <i>i</i><span>Topic mastery is the percentage of scored questions answered correctly for that topic. Needs practice is below 60%, Developing is 60–74%, and Strong is 75% or above.</span></span></header>
 <div class="topic-playbook-list">
-<article class="expanded"><button type="button" aria-expanded="true"><span><small>PRIORITY TOPIC</small><b>Grammar</b><span>Your basic tenses and conditionals are solid; next, focus on perfect tenses and reading timelines accurately.</span></span><span><em>Needs practice</em><strong>44%</strong><i></i></span></button><div><div class="playbook-analysis-grid"><section><h4>Mistake pattern analysis</h4><p>Most errors involve comparing event order and completion time. Phrases such as “by next month” require an action to be completed before that future point.</p></section><section><h4>Skill mastery analysis</h4><p>Basic tense control is steady. Routine clues, present continuous forms and conditional grammar are generally handled well.</p></section><section><h4>Areas to strengthen</h4><p>Connect time signals with the action’s status instead of reacting to one word such as “future” or "past".</p></section><section><h4>Targeted suggestions</h4><p>Underline the time clue, decide whether the action is habitual, in progress or completed, then choose the tense pattern.</p></section><section><h4>Next practice focus</h4><p>Practise mixed-tense questions contrasting future perfect, future continuous, past perfect and simple past.</p></section></div><small>Based on the scored questions currently available.</small></div><footer class="playbook-row-action"><a href="../../student-assessment-taking-mockup.html?flow=practice&amp;pack=english-grammar&amp;autostart=1">Practise Grammar →</a></footer></article>
-<article><button type="button" aria-expanded="false"><span><small>TOPIC</small><b>Writing</b><span>Writing is developing and needs more consistent application.</span></span><span><em class="developing">Developing</em><strong>68%</strong><i></i></span></button><div><p>Writing is developing. A focused review can help turn partial understanding into a more consistent result.</p><small>Based on the scored questions currently available for this source and subject.</small></div><footer class="playbook-row-action"><a href="../../student-assessment-taking-mockup.html?flow=practice&amp;pack=english-reading&amp;autostart=1">Practise Writing →</a></footer></article>
-<article><button type="button" aria-expanded="false"><span><small>TOPIC</small><b>Vocabulary</b><span>Vocabulary is performing well in the current evidence.</span></span><span><em class="strong">Strong</em><strong>73%</strong><i></i></span></button><div><p>Vocabulary is currently performing well. Keep it active while prioritising lower-scoring topics.</p><small>Based on the scored questions currently available for this source and subject.</small></div><footer class="playbook-row-action"><a href="../../student-assessment-taking-mockup.html?flow=practice&amp;pack=english-vocabulary&amp;autostart=1">Practise Vocabulary →</a></footer></article>
+<article class="expanded"><button type="button" aria-expanded="true"><span><small>PRIORITY TOPIC</small><b>Grammar</b><span>Your basic tenses and conditionals are solid; next, focus on perfect tenses and reading timelines accurately.</span></span><span><em>Needs practice</em><strong>44%</strong><i></i></span></button><div><div class="playbook-analysis-grid"><section><h4>Mistake pattern analysis</h4><p>Most errors involve comparing event order and completion time. Phrases such as “by next month” require an action to be completed before that future point.</p></section><section><h4>Skill mastery analysis</h4><p>Basic tense control is steady. Routine clues, present continuous forms and conditional grammar are generally handled well.</p></section><section><h4>Areas to strengthen</h4><p>Connect time signals with the action’s status instead of reacting to one word such as “future” or "past".</p></section><section><h4>Targeted suggestions</h4><p>Underline the time clue, decide whether the action is habitual, in progress or completed, then choose the tense pattern.</p></section><section><h4>Next review focus</h4><p>Review submitted mixed-tense questions contrasting future perfect, future continuous, past perfect and simple past.</p></section></div><small>Combined from submitted School Assessment and Challenge Practice questions.</small></div><footer class="playbook-row-action"><a href="/eval/assessment-player/?review=topic&amp;topic=Grammar&amp;source=combined">Review →</a></footer></article>
+<article><button type="button" aria-expanded="false"><span><small>TOPIC</small><b>Writing</b><span>Writing is developing and needs more consistent application.</span></span><span><em class="developing">Developing</em><strong>68%</strong><i></i></span></button><div><p>Writing is developing. A focused review can help turn partial understanding into a more consistent result.</p><small>Combined from submitted School Assessment and Challenge Practice questions.</small></div><footer class="playbook-row-action"><a href="/eval/assessment-player/?review=topic&amp;topic=Writing&amp;source=combined">Review →</a></footer></article>
+<article><button type="button" aria-expanded="false"><span><small>TOPIC</small><b>Vocabulary</b><span>Vocabulary is performing well in the current evidence.</span></span><span><em class="strong">Strong</em><strong>73%</strong><i></i></span></button><div><p>Vocabulary is currently performing well. Keep it active while prioritising lower-scoring topics.</p><small>Combined from submitted School Assessment and Challenge Practice questions.</small></div><footer class="playbook-row-action"><a href="/eval/assessment-player/?review=topic&amp;topic=Vocabulary&amp;source=combined">Review →</a></footer></article>
 </div>
-<details class="playbook-insufficient"><summary><span><i>i</i><b>2 topics need more evidence</b></span><i class="playbook-insufficient-chevron"></i></summary><div><p>Complete more questions in these topics to unlock a reliable insight:</p><ul><li><span><b>Text-based reading</b><small>Not enough scored questions yet</small></span><a href="../../student-assessment-taking-mockup.html?flow=practice&amp;pack=english-reading&amp;autostart=1">Practise Text-based reading →</a></li><li><span><b>Summary writing</b><small>Not enough scored questions yet</small></span><a href="../../student-assessment-taking-mockup.html?flow=practice&amp;pack=english-reading&amp;autostart=1">Practise Summary writing →</a></li></ul></div></details>
-<p class="topic-component-note">Focused revision appears only after question-level topic links are available.</p>
+<details class="playbook-insufficient"><summary><span><i>i</i><b>2 topics need more evidence</b></span><i class="playbook-insufficient-chevron"></i></summary><div><p>Complete more questions in these topics to unlock a reliable insight:</p><ul><li><span><b>Text-based reading</b><small>Not enough scored questions yet</small></span><a href="/eval/assessment-player/?flow=practice&amp;pack=english-reading&amp;autostart=1">Practise Text-based reading →</a></li><li><span><b>Summary writing</b><small>Not enough scored questions yet</small></span><a href="/eval/assessment-player/?flow=practice&amp;pack=english-reading&amp;autostart=1">Practise Summary writing →</a></li></ul></div></details>
+<p class="topic-component-note">Review opens submitted questions for the topic across School Assessment and Challenge Practice.</p>
 </article>
 <div class="monthly-demo">
 <article class="current">
@@ -492,11 +500,17 @@
 <b>Ava Lau</b>
 </div>
 <div class="account-menu-sample">
-<button>Profile</button>
-<button>Log out</button>
+<header><b>Accounts and roles</b><button aria-label="Close">×</button></header>
+<div class="account-admin-line"><span>EXAI account</span><b>Admin</b><small>Account-level privilege · not a separate product view</small></div>
+<button class="context-option"><b>EXAI · Teacher</b><span>Class 5A · Math Olympiad</span></button>
+<button class="context-option"><b>EXAI · Student</b><span>Class 5A · Math Olympiad</span></button>
+<footer><button>Profile</button><button>Log out</button></footer>
+</div>
+<div class="mobile-account-sheet"><header><b>Accounts and roles</b><button aria-label="Close">×</button></header><p>Mobile uses a full-width bottom sheet so organisation and class names are never squeezed into the top bar.</p></div>
+<div class="branding-samples"><article><b>EXAI</b><span>Inherited branding always uses EXAI</span></article><article><b>School logo or safe wordmark</b><span>Custom logo area</span><small>Powered by EXAI</small></article></div>
 </div>
 </div>
-</div>
+<article class="accounts-playbook-card"><h3>Your accounts and roles</h3><p>Uses the same context options as the avatar menu.</p><button class="context-option active"><b>EXAI · Student</b><span>Class 5A · Math Olympiad</span><i>✓</i></button><button class="context-option"><b>EXAI · Teacher</b><span>Class 5A · Math Olympiad</span></button><div class="reset-playbook"><b>Reset EXAI demo-account data</b><p>Account-scoped and shown once only when accountCapabilities.canResetDemo is granted, including while an eligible account views another role. Preview generated papers, assignments, attempts, responses, practice activity and results. Organisations, roles, memberships, classes and the baseline dummy roster remain.</p><button>Preview reset</button></div></article>
 </section>
 <section>
 <h2>Forms, profile and security</h2>
@@ -545,6 +559,9 @@
 <b>Unable to load this paper</b>
 <button>Try again</button>
 </article>
+<article class="permission-state"><span class="badge warn">NO ACCESS</span><b>You do not have access to this page</b><p>Global navigation remains available so another page or account context can be selected.</p></article>
+<article class="empty-state"><b>No visible classes</b><p>Classes assigned to this teacher will appear here.</p></article>
+<article class="error-state"><span class="badge bad">CONTEXT ERROR</span><b>Account context could not be loaded</b><p>Keep the shell available and offer one retry without a redirect loop.</p><button>Try again</button></article>
 <article>
 <span class="badge warn">AWAITING REVIEW</span>
 <h3>Teacher review pending</h3>
@@ -781,6 +798,6 @@
 </div>
 </section>
 </aside>
-<script>theme.onchange=e=>document.documentElement.dataset.theme=e.target.value;size.onchange=e=>document.documentElement.dataset.size=e.target.value;const componentSelect=document.querySelector('#componentSelect'),selectButton=componentSelect.firstElementChild;selectButton.onclick=()=>{const open=componentSelect.classList.toggle('open');selectButton.setAttribute('aria-expanded',open)};componentSelect.querySelectorAll('[data-value]').forEach(option=>option.onclick=()=>{selectButton.firstElementChild.textContent=option.dataset.value;componentSelect.querySelector('.selected')?.classList.remove('selected');option.classList.add('selected');componentSelect.classList.remove('open');selectButton.setAttribute('aria-expanded','false')});</script>
+<script>const playbookThemeKey='exai-playbook-theme',playbookSizeKey='exai-playbook-size';theme.value=localStorage.getItem(playbookThemeKey)||'light';size.value=localStorage.getItem(playbookSizeKey)||'medium';document.documentElement.dataset.theme=theme.value;document.documentElement.dataset.size=size.value;theme.onchange=e=>{document.documentElement.dataset.theme=e.target.value;localStorage.setItem(playbookThemeKey,e.target.value)};size.onchange=e=>{document.documentElement.dataset.size=e.target.value;localStorage.setItem(playbookSizeKey,e.target.value)};const componentSelect=document.querySelector('#componentSelect'),selectButton=componentSelect.firstElementChild;selectButton.onclick=()=>{const open=componentSelect.classList.toggle('open');selectButton.setAttribute('aria-expanded',open)};componentSelect.querySelectorAll('[data-value]').forEach(option=>option.onclick=()=>{selectButton.firstElementChild.textContent=option.dataset.value;componentSelect.querySelector('.selected')?.classList.remove('selected');option.classList.add('selected');componentSelect.classList.remove('open');selectButton.setAttribute('aria-expanded','false')});</script>
 </body>
 </html>

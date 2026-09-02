@@ -8,11 +8,10 @@ window.addEventListener('DOMContentLoaded',async()=>{
   const client=ready?window.supabase.createClient(config.url,config.publishableKey):null;
   if(!client){message.textContent='Sign-in connection is being configured for staging.';form.querySelectorAll('input,button').forEach(item=>item.disabled=true);return}
   const destinationFor=async user=>{
-    const {data}=await client.from('profiles').select('role').eq('id',user.id).maybeSingle();
-    const teacher=data?.role==='teacher'||data?.role==='school_admin'||data?.role==='platform_admin';
-    const compiled=location.pathname.includes('/eval/');
-    if(compiled)return teacher?'/eval/teacher/results/':'/eval/assessments/';
-    return teacher?'teacher/results/':'assessments/';
+    const email=String(user?.email||'').toLowerCase();
+    localStorage.setItem('exai_demo_user',email==='tiom@tiom.ai'?'tiom':email==='t1@tiom.ai'?'t1':'standard');
+    if(!window.EXAI_CONTEXT_READY){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js':'app/context-bootstrap.js';document.head.append(script);await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject})}
+    const provider=await window.EXAI_CONTEXT_READY,context=await provider.load(true);return provider.defaultHref(context.activeContext);
   };
   const {data:{session}}=await client.auth.getSession();
   if(session)location.replace(await destinationFor(session.user));

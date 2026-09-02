@@ -17,7 +17,7 @@
 .confirm-pref{display:flex;align-items:center;gap:8px;margin-top:17px;color:#656c78;font-size:11px}.confirm-pref input{width:16px;height:16px;accent-color:var(--blue)}
 .audio-card,.audio-row,.wave{min-width:0;max-width:100%}.wave{overflow:hidden}.wave i{flex:0 0 3px}.audio-card{overflow:hidden}@media(max-width:850px){.audio-row{width:100%}.wave{flex:1 1 auto}}@media(max-width:600px){.audio-card{padding:18px}.audio-row{gap:10px}.wave i{flex-basis:2px}.audio-time{margin-left:56px}}
 </style>
-<link rel="stylesheet" href="app/final-design-pass.css?v=20260830-3"><script defer src="app/interface-translations.js"></script><script defer src="app/student-dropdowns.js"></script><script defer src="app/supabase.js"></script><script defer src="app/supabase-config.js"></script><script defer src="app/role-guard.js"></script></head>
+<link rel="stylesheet" href="app/final-design-pass.css?v=20260830-3"><script defer src="app/interface-translations.js"></script><script defer src="app/student-dropdowns.js"></script><script defer src="app/context-bootstrap.js"></script><script defer src="app/role-guard.js"></script><script defer src="app/supabase.js"></script><script defer src="app/supabase-config.js"></script></head>
 <body>
 <main class="shell">
   <header class="topbar assessment-topbar">
@@ -82,32 +82,34 @@ numbers.onclick=e=>{if(flow!=='paper')return;const b=e.target.closest('[data-ind
 const promptSafeRender=render;render=function(){promptSafeRender();document.querySelector('#prompt').textContent=questions[current].prompt};
 const reviewMode=new URLSearchParams(location.search).get('review');
 if(reviewMode){
-  const teacherView=new URLSearchParams(location.search).get('viewer')==='teacher';
-  const reviewEntrance=teacherView?'teacher/students/student/':'results/';
+  const reviewParams=new URLSearchParams(location.search),teacherView=reviewParams.get('viewer')==='teacher',topicReview=reviewMode==='topic',reviewTopic=reviewParams.get('topic')||'Topic';
+  const reviewEntrance=teacherView?'teacher/students/student/':topicReview?'performance/':'results/';
+  if(topicReview){const kind=reviewTopic.toLowerCase().includes('grammar')?'grammar':reviewTopic.toLowerCase().includes('vocab')?'vocabulary':reviewTopic.toLowerCase().includes('listen')?'listening':'reading',matched=questions.filter(q=>q.kind===kind);questions.splice(0,questions.length,...matched);}
   const baseRender=render;
-  questions.forEach((q,i)=>{q.answer=reviewMode==='result'?(q.kind==='short'?(i===7?'Cities need several coordinated measures.':''):(i+1)%q.options.length):null;q.submitted=true});
+  questions.forEach((q,i)=>{q.answer=reviewMode==='result'||topicReview?(q.kind==='short'?'Cities need several coordinated measures.':(i+1)%q.options.length):null;q.submitted=true;q.reviewSource=i%2?'Challenge Practice':'School Assessment'});
   render=function(){
     baseRender();
     const q=questions[current],hasAnswer=q.answer!==null&&q.answer!=='';
     flag.style.display='none';flowMode.style.display='none';document.querySelector('.timer').style.display='none';
-    document.querySelector('.title strong').textContent=reviewMode==='result'?'Review answers — DSE English':'Released paper — DSE English';
-    document.querySelector('.title span').textContent=reviewMode==='result'?'Submitted 18 Aug 2026':'Closed assessment · No submission';
+    document.querySelector('.title strong').textContent=topicReview?`${reviewTopic} — submitted question review`:reviewMode==='result'?'Review answers — DSE English':'Released paper — DSE English';
+    document.querySelector('.title span').textContent=topicReview?'School Assessments + Challenge Practice':reviewMode==='result'?'Submitted 18 Aug 2026':'Closed assessment · No submission';
     questionCount.textContent=`Question ${current+1} of ${questions.length}`;
-    document.querySelector('.question-meta p').lastChild.textContent=` · ${labels[q.kind]} · Review`;
+    document.querySelector('.question-meta p').lastChild.textContent=` · ${labels[q.kind]} · ${topicReview?q.reviewSource:'Review'}`;
     options.querySelectorAll('button,input').forEach(el=>el.disabled=true);
     feedbackPanel.className='feedback-panel open';
     const submitted=hasAnswer?(q.options?.[q.answer]||q.answer):'No answer submitted',correct=q.options?.[q.correct]||q.correct;
-    feedbackPanel.innerHTML=`<b>${reviewMode==='result'?(q.answer===q.correct?'Correct':'Review this answer'):'Released answer'}</b><div class="feedback-grid">${reviewMode==='result'?`<div><small>YOUR ANSWER</small><strong>${submitted}</strong></div>`:''}<div><small>CORRECT ANSWER</small><strong>${correct}</strong></div></div><div class="explanation"><b>Explanation</b><p>This answer follows the question’s key language rule or evidence in the source material.</p><p class="study-tip"><b>Study tip:</b> Revisit the relevant sentence or rule before trying a similar question.</p></div>`;
-    flowHint.textContent=reviewMode==='result'?'Submitted answers, correct answers and explanations':'Released questions, answers and explanations';
+    feedbackPanel.innerHTML=`<b>${reviewMode==='result'||topicReview?(q.answer===q.correct?'Correct':'Review this answer'):'Released answer'}</b><div class="feedback-grid">${reviewMode==='result'||topicReview?`<div><small>YOUR ANSWER</small><strong>${submitted}</strong></div>`:''}<div><small>CORRECT ANSWER</small><strong>${correct}</strong></div></div><div class="explanation"><b>Explanation</b><p>This answer follows the question’s key language rule or evidence in the source material.</p><p class="study-tip"><b>Study tip:</b> Revisit the relevant sentence or rule before trying a similar question.</p></div>`;
+    flowHint.textContent=topicReview?'Submitted topic questions, answers and explanations':reviewMode==='result'?'Submitted answers, correct answers and explanations':'Released questions, answers and explanations';
+    if(topicReview&&current===questions.length-1)next.textContent='Back to Performance';
     previous.style.display='';previous.disabled=current===0;next.disabled=false;next.textContent=current===questions.length-1?'Back to Results':'Next question →';
   };
   options.onclick=null;options.oninput=null;cover.classList.add('hidden');reviewScreen.classList.add('hidden');workspace.classList.remove('hidden');footer.classList.remove('hidden');current=0;
   previous.onclick=()=>{if(current){current--;render()}};
   next.onclick=()=>{if(current<questions.length-1){current++;render()}else location.href=reviewEntrance};
-  quit.textContent=teacherView?'Back to Student':'Back to Results';quit.onclick=()=>location.href=reviewEntrance;
+  quit.textContent=teacherView?'Back to Student':topicReview?'Back to Performance':'Back to Results';quit.onclick=()=>location.href=reviewEntrance;
   render();
 }
 </script>
 <script src="app/player-launch-state.js"></script>
-<script src="app/supabase-config.js"></script><script src="app/submission-client.js"></script><script src="app/assessment-taking-final.js"></script><script src="app/english-pack-content.js"></script><script src="app/assessment-media-fix.js"></script></body>
+<script src="app/supabase-config.js"></script><script src="app/submission-client.js"></script><script src="app/assessment-taking-final.js"></script><script src="app/english-pack-content.js"></script><script src="app/assessment-media-fix.js"></script><script src="app/test-taking-ux-pass.js"></script><script src="app/audio-player-component.js"></script></body>
 </html>

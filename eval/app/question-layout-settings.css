@@ -1,0 +1,21 @@
+.catalogue-settings{display:flex;align-items:end;gap:10px}
+.playbook-link{display:block;width:max-content;margin-bottom:14px;color:var(--brand);font-size:.85rem;font-weight:700;text-decoration:none}.playbook-link:hover{text-decoration:underline}.playbook-link+span{display:block}
+.catalogue-header select{color:var(--ink)}
+html[data-size=small] body{font-size:14px}
+html[data-size=medium] body{font-size:16px}
+html[data-size=large] body{font-size:19px}
+html[data-theme=light]{--ink:#20242c;--muted:#687386;--line:#dce4ef;--surface:#fff;--canvas:#f6f8fc;--brand-soft:#edf3ff}
+html[data-theme=light] .stimulus{background:#fbfcff}
+html[data-theme=light] .option,html[data-theme=light] .graph-option,html[data-theme=light] .figure,html[data-theme=light] .audio-player,html[data-theme=light] .cloze-passage select,html[data-theme=light] .catalogue-header select,html[data-theme=light] .text-answer,html[data-theme=light] .numeric-answer{background:#fff;color:var(--ink)}
+html[data-theme=dark]{--ink:#dedede;--muted:#a4a4a4;--line:#353535;--surface:#1b1b1b;--canvas:#111;--brand-soft:#292d36}
+html[data-theme=dark] .stimulus{background:#181818}
+html[data-theme=dark] .option,html[data-theme=dark] .graph-option,html[data-theme=dark] .figure,html[data-theme=dark] .audio-player,html[data-theme=dark] .cloze-passage select,html[data-theme=dark] .catalogue-header select,html[data-theme=dark] .text-answer,html[data-theme=dark] .numeric-answer{background:#222;color:var(--ink)}
+html[data-theme=dark] .stimulus p,html[data-theme=dark] .cloze-passage,html[data-theme=dark] .part{color:var(--muted)}
+html[data-theme=dark] .option:hover{background:#292929}
+html[data-theme=dark] .answer-summary.wrong{border-color:#9f5059;background:#3a2229;color:#ffd9dc}
+html[data-theme=dark] .answer-summary.correct{border-color:#438564;background:#1d382c;color:#d8f4e5}
+html[data-theme=dark] .figure button{border-color:var(--line);background:#1c2330;color:#8cafff}
+.layout-example[hidden]{display:none}
+@media(max-width:760px){.catalogue-settings{display:grid;grid-template-columns:1fr 1fr;width:100%}.catalogue-settings label:first-child{grid-column:1/-1}.catalogue-settings select{width:100%}}
+@font-face{font-family:"Circe Rounded";src:url('../public/exai-assets/circe-rounded-regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Circe Rounded";src:url('../public/exai-assets/circe-rounded-bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap}

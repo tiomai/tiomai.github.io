@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-size="medium">
+<head><base href="/eval/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>EXAI Question Layout Catalogue</title>
+  <link rel="stylesheet" href="app/question-layouts.css">
+  <link rel="stylesheet" href="app/question-layout-settings.css">
+</head>
+<body>
+  <header class="catalogue-header">
+    <div><a class="playbook-link" href="/eval/ui-component/">← UI component playbook</a><span>CONTENT SYSTEM</span><h1>Question layout catalogue</h1><p>Reusable source and response layouts populated with authorised staging and EXAI content-bank examples.</p></div>
+    <div class="catalogue-settings">
+      <label>Subject<select id="subjectFilter"><option value="all">All subjects</option><option value="english">English</option><option value="math">Math</option></select></label>
+      <label>Theme<select id="theme"><option value="light">Light</option><option value="dark">Dark</option></select></label>
+      <label>Text size<select id="textSize"><option value="small">Small</option><option value="medium">Medium</option><option value="large">Large</option></select></label>
+    </div>
+  </header>
+  <main id="layoutCatalogue" class="catalogue"></main>
+  <script src="app/question-layouts.js"></script>
+</body>
+</html>
