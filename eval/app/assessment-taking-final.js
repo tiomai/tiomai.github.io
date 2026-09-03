@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded',()=>{
 /* Submission exits return to the page that launched the experience. */
 window.addEventListener('DOMContentLoaded',()=>{
   if(typeof reviewMode!=='undefined'&&reviewMode)return;
-  const entry=()=>flow==='practice'?'practices/':'assessments/';
+  const entry=()=>flow==='practice'?'/eval/practices/':'/eval/assessments/';
   const finish=async()=>{const button=document.querySelector('.submit-paper')||next;button.disabled=true;button.textContent='Saving…';await window.EXAI_ATTEMPT_UI?.submit('manual',{packSlug:new URLSearchParams(location.search).get('pack')||`english-${flow}`,mode:flow==='practice'?'leisure':'assessment',responses:questions.map(question=>question.answer),questions});location.href=entry()};
   document.querySelector('.submit-paper').onclick=()=>openSubmit('paper',finish);
   if(typeof advanceAdaptive==='function')advanceAdaptive=()=>{if(current<questions.length-1){current++;render()}else finish()};

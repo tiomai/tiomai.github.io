@@ -1,7 +1,7 @@
 /* Account access is resolved through EXAI_ACCOUNT_CONTEXT. This guard does not
    query membership, role, preference, or capability tables. */
 window.addEventListener('DOMContentLoaded',async()=>{
-  const config=window.EXAI_SUPABASE_CONFIG||{},compiled=location.pathname.includes('/eval/'),login=compiled?'/eval/login/':'login/';
+  const config=window.EXAI_SUPABASE_CONFIG||{},compiled=location.pathname.includes('/eval/'),login=compiled?'/eval/login/':'/eval/login/';
   if(window.supabase?.createClient&&config.url&&config.publishableKey){
     const client=window.supabase.createClient(config.url,config.publishableKey),{data:{session}}=await client.auth.getSession();
     if(!session){location.replace(login);return}

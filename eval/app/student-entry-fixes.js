@@ -3,7 +3,7 @@
   const reviewHref=button=>{
     const row=button.closest('.result'),resultId=button.dataset.resultOpen||row?.dataset.resultId;
     const fallbackId=button.dataset.id?`legacy-${button.dataset.id}`:null,id=resultId||fallbackId;
-    return id?`assessment-player/?review=result&resultId=${encodeURIComponent(id)}`:null;
+    return id?`/eval/assessment-player/?review=result&resultId=${encodeURIComponent(id)}`:null;
   };
   document.addEventListener('click',event=>{
     const button=event.target.closest('[data-result-open],.result .view.primary[data-id]');

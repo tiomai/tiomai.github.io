@@ -155,8 +155,8 @@ addEventListener('DOMContentLoaded', () => {
     };
     const list = document.querySelector('#drawerStudents');
     const reviewTarget = currentBatch[1] === 'Math'
-      ? 'practice-player/?mode=assessment&pack=math-s4&review=result&viewer=teacher'
-      : `assessment-player/?review=result&pack=${currentBatch[0].includes('Listening')?'english-listening':'dse-reading'}&viewer=teacher`;
+      ? '/eval/practice-player/?mode=assessment&pack=math-s4&review=result&viewer=teacher'
+      : `/eval/assessment-player/?review=result&pack=${currentBatch[0].includes('Listening')?'english-listening':'dse-reading'}&viewer=teacher`;
     list.innerHTML = (groups[kind] || []).map((student,index) => `<article class="student-result-row" ${kind==='completed'?`data-href="${reviewTarget}" tabindex="0"`:'aria-disabled="true"'}><div><strong>${student.name}</strong><small>${student.id} · ${currentBatch[3]}</small></div><span class="score">${kind==='completed'?`${68+(index*7)%27}%`:'—'}</span><span class="state">${kind==='completed'?'RESULT AVAILABLE':kind==='progress'?'IN PROGRESS':'NOT SUBMITTED'}</span></article>`).join('') || '<p class="batch-empty">No students in this group.</p>';
     list.querySelectorAll('[data-href]').forEach(item => item.addEventListener('click', () => { location.href = item.dataset.href; }));
   };
