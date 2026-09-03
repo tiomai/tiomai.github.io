@@ -13,7 +13,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
   const destinationFor=async user=>{
     const email=String(user?.email||'').toLowerCase();
     localStorage.setItem('exai_demo_user',email==='tiom@tiom.ai'?'tiom':email==='t1@tiom.ai'?'t1':'standard');
-    if(!window.EXAI_CONTEXT_READY){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js?v=20260903-1':'app/context-bootstrap.js?v=20260903-1';document.head.append(script);await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject})}
+    if(!window.EXAI_CONTEXT_READY){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js?v=20260903-2':'app/context-bootstrap.js?v=20260903-2';document.head.append(script);await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject})}
     const provider=await window.EXAI_CONTEXT_READY,context=await provider.load(true);return provider.defaultHref(context.activeContext);
   };
   submitHandler=async()=>{
