@@ -23,12 +23,14 @@
     }
     return {displayName:'Account',email:'signed-in account'};
   };
-  const contexts={
-    tiom:[
+  const tiomContexts=[
       {membershipId:'mem-exai-admin',organisationId:'org-exai',organisationName:'EXAI',role:'administrator',classes:[],capabilities:{canViewStudents:true,canViewResults:true,canAssign:true,canReview:true}},
       {membershipId:'mem-exai-teacher',organisationId:'org-exai',organisationName:'EXAI',role:'teacher',classes:[{id:'class-5a',name:'Class 5A'},{id:'class-math-olympiad',name:'Math Olympiad'}],capabilities:{canViewStudents:true,canViewResults:true,canAssign:true,canReview:true}},
       {membershipId:'mem-exai-student',organisationId:'org-exai',organisationName:'EXAI',role:'student',classes:[{id:'class-5a',name:'Class 5A'},{id:'class-math-olympiad',name:'Math Olympiad'}],capabilities:{canViewStudents:false,canViewResults:true,canAssign:false,canReview:false}}
-    ],
+    ];
+  const contexts={
+    tiom:tiomContexts,
+    raymond:tiomContexts,
     t1:[{membershipId:'mem-exai-t1-teacher',organisationId:'org-exai',organisationName:'EXAI',role:'teacher',classes:[],capabilities:{canViewStudents:true,canViewResults:true,canAssign:true,canReview:true}}],
     standard:[{membershipId:'mem-exai-standard-student',organisationId:'org-exai',organisationName:'EXAI',role:'student',classes:[],capabilities:{canViewStudents:false,canViewResults:true,canAssign:false,canReview:false}}]
   };
