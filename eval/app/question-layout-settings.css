@@ -1,0 +1,19 @@
+.catalogue-settings{display:flex;align-items:end;gap:10px}
+.playbook-link{display:block;width:max-content;margin-bottom:14px;color:var(--brand);font-size:.85rem;font-weight:700;text-decoration:none}.playbook-link:hover{text-decoration:underline}.playbook-link+span{display:block}
+.catalogue-header select{color:var(--ink)}
+html[data-size=small] body{font-size:14px}
+html[data-size=medium] body{font-size:16px}
+html[data-size=large] body{font-size:19px}
+html[data-theme=light]{--ink:#20242c;--muted:#687386;--line:#dce4ef;--surface:#fff;--canvas:#f6f8fc;--brand-soft:#edf3ff;--answer-correct-border:#55a879;--answer-correct-bg:#eef9f2;--answer-correct-text:#286c49;--answer-correct-indicator:#55a879;--answer-wrong-border:#df6868;--answer-wrong-bg:#fff1f1;--answer-wrong-text:#9f3535;--answer-wrong-indicator:#df6868;--answer-feedback-border:#d8e3fb;--answer-cell-bg:#fff;--answer-divider:#dbe3f1;--answer-copy:#5f6672;--study-tip-bg:#eef4ff;--study-tip-text:#315baf}
+html[data-theme=light] .stimulus{background:#fbfcff}
+html[data-theme=light] :where(.option,.graph-option,.figure,.audio-player,.cloze-passage select,.catalogue-header select,.text-answer,.numeric-answer){background:var(--surface);color:var(--ink)}
+html[data-theme=dark]{--ink:#dedede;--muted:#a4a4a4;--line:#353535;--surface:#1b1b1b;--canvas:#111;--brand-soft:#292d36;--answer-correct-border:#426a53;--answer-correct-bg:#203129;--answer-correct-text:#a8cfb9;--answer-correct-indicator:#72bb91;--answer-wrong-border:#694246;--answer-wrong-bg:#382426;--answer-wrong-text:#d7a0a0;--answer-wrong-indicator:#df777d;--answer-feedback-border:#694246;--answer-cell-bg:#202020;--answer-divider:#444;--answer-copy:#c7c7c7;--study-tip-bg:#292929;--study-tip-text:#c8c8c8}
+html[data-theme=dark] .stimulus{background:#181818}
+html[data-theme=dark] :where(.option,.graph-option,.figure,.audio-player,.cloze-passage select,.catalogue-header select,.text-answer,.numeric-answer){background:#222;color:var(--ink)}
+html[data-theme=dark] .stimulus p,html[data-theme=dark] .cloze-passage,html[data-theme=dark] .part{color:var(--muted)}
+html[data-theme=dark] .option:hover{background:#292929}
+html[data-theme=dark] .figure button{border-color:var(--line);background:#1c2330;color:#8cafff}
+.layout-example[hidden]{display:none}
+@media(max-width:760px){.catalogue-settings{display:grid;grid-template-columns:1fr 1fr;width:100%}.catalogue-settings label:first-child{grid-column:1/-1}.catalogue-settings select{width:100%}}
+@font-face{font-family:"Circe Rounded";src:url('../public/exai-assets/circe-rounded-regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Circe Rounded";src:url('../public/exai-assets/circe-rounded-bold.otf') format('opentype');font-weight:700;font-style:normal;font-display:swap}

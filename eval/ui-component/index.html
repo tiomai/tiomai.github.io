@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-size="medium">
+<head><base href="/eval/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UI Component Playbook</title>
+<link rel="stylesheet" href="/eval/ui-component/ui-components.css?v=20260907-2">
+<link rel="stylesheet" href="/eval/ui-component/product-parity.css?v=20260907-2">
+</head>
+<body>
+<script defer src="/eval/ui-component/playbook-current-components.js?v=20260907-2"></script>
+<script defer src="/eval/ui-component/playbook-tooltips.js?v=20260907-2"></script>
+<script defer src="/eval/ui-component/playbook-product-parity.js?v=20260907-2"></script>
+<header class="top">
+<a class="catalogue-link" href="/eval/question-layout/">Question layout catalogue ↗</a>
+<div>
+<span class="eyebrow">EXAI DESIGN SYSTEM</span>
+<h1>UI component playbook</h1>
+<p>Canonical responsive reference for every shared student and teacher component.</p>
+</div>
+<div class="settings">
+<label>Theme<select id="theme">
+<option value="light">Light</option>
+<option value="dark">Dark</option>
+</select>
+</label>
+<label>Text size<select id="size">
+<option value="small">Small</option>
+<option value="medium" selected>Medium</option>
+<option value="large">Large</option>
+</select>
+</label>
+</div>
+</header>
+<main>
+<section>
+<h2>Foundations</h2>
+<div class="swatches">
+<article>
+<i class="brand">
+</i>
+<b>Brand</b>
+<code>#3974F7</code>
+</article>
+<article>
+<i class="success">
+</i>
+<b>Success</b>
+<code>#338160</code>
+</article>
+<article>
+<i class="warning">
+</i>
+<b>Warning</b>
+<code>#B86027</code>
+</article>
+<article>
+<i class="danger">
+</i>
+<b>Danger</b>
+<code>#D44C4C</code>
+</article>
+<article>
+<i class="surface">
+</i>
+<b>Surface</b>
+<code>Theme token</code>
+</article>
+</div>
+<div class="type">
+<p class="display">Display / Large</p>
+<h3>Heading / Medium</h3>
+<p>Body / Medium — Clear interface copy for learning and assessment workflows.</p>
+<small>Label / Small</small>
+</div>
+</section>
+<section>
+<h2>Actions and inputs</h2>
+<div class="row">
+<button class="primary">Primary action</button>
+<button>Secondary action</button>
+<button class="quiet">Quiet action</button>
+<button disabled>Disabled</button>
+</div>
+<div class="form">
+<label>Search<span class="search-control">
+<i aria-hidden="true">
+</i>
+<input placeholder="Search assessments">
+</span>
+</label>
+<label>Subject<div class="component-select" id="componentSelect">
+<button type="button" aria-haspopup="listbox" aria-expanded="false">
+<span>All subjects</span>
+<i>
+</i>
+</button>
+<div role="listbox">
+<button class="selected" data-value="All subjects">All subjects</button>
+<button data-value="English">English</button>
+<button data-value="Math">Math</button>
+</div>
+</div>
+</label>
+<label>Password<input type="password" value="password">
+</label>
+</div>
+</section>
+<section>
+<h2>Status and feedback</h2>
+<div class="row">
+<span class="badge info">IN PROGRESS</span>
+<span class="badge good">RESULT AVAILABLE</span>
+<span class="badge warn">AWAITING REVIEW</span>
+<span class="badge bad">ACTION REQUIRED</span>
+<span class="awaiting-note">Being reviewed</span>
+</div>
+<div class="notice">
+<b>Information</b>
+<p>Use notices for concise context, not permanent page content.</p>
+</div>
+</section>
+<section>
+<h2>Cards and data</h2>
+<div class="cards">
+<article class="card">
+<small>COMPLETED</small>
+<strong>33 of 58</strong>
+<p>57% of assigned assessments</p>
+</article>
+<article class="card">
+<small>WEIGHTED AVERAGE</small>
+<strong>74%</strong>
+<p>Across scored questions</p>
+</article>
+<article class="card">
+<small>CURRENT LEVEL</small>
+<strong>Level 2</strong>
+<p>Backend-calculated proficiency</p>
+</article>
+</div>
+<article class="result">
+<div>
+<span class="badge good">RESULT AVAILABLE</span>
+<h3>DSE English — Reading &amp; Listening</h3>
+<p>English · Submitted 18 Aug 2026</p>
+</div>
+<strong>79%</strong>
+<button class="primary">View result</button>
+</article>
+</section>
+<section>
+<h2>Test-taking components</h2>
+<div class="test-shell">
+<header>
+<div>
+<small>ASSESSMENT</small>
+<b>DSE English — Reading &amp; Listening</b>
+</div>
+<span class="test-timer">38:42</span>
+</header>
+<div class="test-progress">
+<span>Question 3 of 10</span>
+<i>
+<b style="width:30%">
+</b>
+</i>
+<span>2 answered</span>
+</div>
+<div class="question-layout">
+<aside class="question-rail" aria-label="Question navigation">
+<small>No.</small>
+<button class="done">1</button>
+<button class="done">2</button>
+<button class="current">3</button>
+<button>4</button>
+<button class="bookmarked">5</button>
+</aside>
+<article class="question-card">
+<small>MULTIPLE CHOICE</small>
+<h3>Why can dense neighbourhoods remain warmer after sunset?</h3>
+<p>Choose the best answer.</p>
+<div class="answers">
+<button>
+<i>
+</i>Buildings release stored heat slowly</button>
+<button class="selected">
+<i>
+</i>Trees produce heat after dark</button>
+<button>
+<i>
+</i>Traffic increases in the evening</button>
+</div>
+<div class="test-actions">
+<button>Bookmark</button>
+<button class="primary">Next question →</button>
+</div>
+<button class="question-id-sample" title="Copy question ID">x45Gs7</button>
+</article>
+</div>
+<div class="audio-control">
+<button aria-label="Stop audio">■</button>
+<div>
+<b>Listening audio</b>
+<i>
+<span style="width:38%">
+</span>
+</i>
+</div>
+<span><b>1 play remaining</b> · Selecting Play immediately uses one play. The recording can be stopped, but not paused.</span>
+</div>
+<div class="feedback-sample">
+<span class="badge bad">INCORRECT</span>
+<div>
+<small>YOUR ANSWER</small><p class="wrong-answer-sample">14</p>
+<small>CORRECT ANSWER</small><p class="correct-answer-sample">12</p>
+<small>EXPLANATION</small><p>For a regular polygon, all exterior angles total 360°. Divide 360° by the given 30° exterior angle: n = 360° ÷ 30° = 12.</p>
+</div>
+</div>
+<div class="test-cover-variants"><article><small>SCREENING ASSESSMENT</small><b>One question at a time</b><p>Submitted answers are final. The assessment moves on when time runs out.</p></article><article><small>LEISURE PRACTICE</small><b>Feedback as you go</b><p>Untimed practice reveals the answer and explanation after each submission.</p></article><article><small>CHALLENGE PRACTICE</small><b>Complete the timed pack</b><p>Answers and explanations are revealed after the completed pack.</p></article></div>
+</div>
+</section>
+<section>
+<h2>Student recommendation and activity cards</h2>
+<p class="section-note">Assessments, practice packs, recommendations and saved revision.</p>
+<article class="recommended-card">
+<header>
+<span>RECOMMENDED NEXT</span>
+<em>Due in 2 days</em>
+</header>
+<div class="recommended-body">
+<i>∑</i>
+<div>
+<small>MATH · IN PROGRESS</small>
+<h3>Continue Math S4</h3>
+<p>About 26 min remaining · Last opened yesterday</p>
+</div>
+<div class="recommended-action">
+<b>35%</b>
+<span>
+<i style="width:35%">
+</i>
+</span>
+<button class="primary">Continue assessment →</button>
+</div>
+</div>
+</article>
+<div class="assessment-examples">
+<article class="assessment-item">
+<i>Aa</i>
+<div>
+<span class="badge info">NOT STARTED</span>
+<h3>DSE English Reading</h3>
+<p>50 min · Text-based reading</p>
+</div>
+<div>
+<small>DEADLINE</small>
+<b>31 Aug</b>
+</div>
+<button>Start →</button>
+</article>
+<article class="pack-card">
+<i>△</i>
+<div>
+<h3>Trigonometry I</h3>
+<p>10 questions · approximately 30 minutes</p>
+</div>
+<button>Start Challenge</button>
+</article>
+<article class="revision-card">
+<span class="badge info">SAVED</span>
+<h3>Equation of a straight line</h3>
+<p>Your answer, correct answer and explanation are available for revision.</p>
+<button>Review question</button>
+</article>
+</div>
+</section>
+<section>
+<h2>Practice mode selection</h2>
+<p class="section-note">Selectable card pair and active/inactive states.</p>
+<div class="mode-playbook">
+<article class="mode-example active">
+<header>
+<div>
+<span class="mode-label">TIMED</span>
+<h3>Challenge mode</h3>
+</div>
+<i>◷</i>
+</header>
+<p>See how you perform under test conditions. Your score is revealed when the pack is complete.</p>
+<ul>
+<li>Timer shown throughout the pack</li>
+<li>Answers and explanations after finishing</li>
+<li>Completed score saved in Results</li>
+</ul>
+<footer>
+<button class="primary">Choose Challenge</button>
+<b>Selected</b>
+</footer>
+</article>
+<article class="mode-example">
+<header>
+<div>
+<span class="mode-label">UNTIMED</span>
+<h3>Leisure mode</h3>
+</div>
+<i>▤</i>
+</header>
+<p>Take your time and learn from every question with feedback as you go.</p>
+<ul>
+<li>No timer or time pressure</li>
+<li>Answer and explanation after each question</li>
+<li>Leave whenever you need to</li>
+</ul>
+<footer>
+<button>Choose Leisure</button>
+</footer>
+</article>
+</div>
+</section>
+<section>
+<h2>Performance and analytics components</h2>
+<p class="component-contract">One aggregate view model drives both student and teacher performance: metrics, monthly summary, trend, English radar or Math topic bars, insights, and data confidence. Teacher-only assessment results are capability gated. Render every returned record; empty and failed sections replace prior content.</p>
+<div class="analytics-grid">
+<article class="chart-card">
+<h3>Score trend</h3>
+<p>Monthly weighted score across completed work</p>
+<div class="mini-chart">
+<i style="height:52%">
+</i>
+<i style="height:46%">
+</i>
+<i style="height:76%">
+</i>
+<i style="height:38%">
+</i>
+<i style="height:51%">
+</i>
+<i style="height:61%">
+</i>
+<i style="height:60%">
+</i>
+</div>
+</article>
+<article class="skill-card">
+<h3>Skill row</h3>
+<div>
+<b>Reading</b>
+<span>
+<i style="width:83%">
+</i>
+</span>
+<strong>83%</strong>
+</div>
+<div>
+<b>Grammar</b>
+<span>
+<i class="warning-bar" style="width:44%">
+</i>
+</span>
+<strong>44%</strong>
+</div>
+</article>
+<article class="insight-card">
+<span>AI</span>
+<div>
+<small>PERFORMANCE SIGNAL</small>
+<h3>Reading is currently strongest</h3>
+<p>Grammar has enough evidence to recommend focused work next.</p>
+</div>
+</article>
+</div>
+<article class="topic-insight-component">
+<header><span>AI</span><div><h3>AI performance insight</h3><p>Open a topic to see the detailed analysis behind its evaluation.</p></div><span class="playbook-mastery-help">How topic mastery works <i>i</i><span>Topic mastery is the percentage of scored questions answered correctly for that topic. Needs practice is below 60%, Developing is 60–74%, and Strong is 75% or above.</span></span></header>
+<div class="topic-playbook-list">
+<article class="expanded"><button type="button" aria-expanded="true"><span><small>PRIORITY TOPIC</small><b>Grammar</b><span>Your basic tenses and conditionals are solid; next, focus on perfect tenses and reading timelines accurately.</span></span><span><em>Needs practice</em><strong>44%</strong><i></i></span></button><div><div class="playbook-analysis-grid"><section><h4>Mistake pattern analysis</h4><p>Most errors involve comparing event order and completion time. Phrases such as “by next month” require an action to be completed before that future point.</p></section><section><h4>Skill mastery analysis</h4><p>Basic tense control is steady. Routine clues, present continuous forms and conditional grammar are generally handled well.</p></section><section><h4>Areas to strengthen</h4><p>Connect time signals with the action’s status instead of reacting to one word such as “future” or "past".</p></section><section><h4>Targeted suggestions</h4><p>Underline the time clue, decide whether the action is habitual, in progress or completed, then choose the tense pattern.</p></section><section><h4>Next review focus</h4><p>Review submitted mixed-tense questions contrasting future perfect, future continuous, past perfect and simple past.</p></section></div><small>Combined from submitted School Assessment and Challenge Practice questions.</small></div><footer class="playbook-row-action"><a href="../..//eval/assessment-player/?review=topic&amp;topic=Grammar&amp;source=combined">Review →</a></footer></article>
+<article><button type="button" aria-expanded="false"><span><small>TOPIC</small><b>Writing</b><span>Writing is developing and needs more consistent application.</span></span><span><em class="developing">Developing</em><strong>68%</strong><i></i></span></button><div><p>Writing is developing. A focused review can help turn partial understanding into a more consistent result.</p><small>Combined from submitted School Assessment and Challenge Practice questions.</small></div><footer class="playbook-row-action"><a href="../..//eval/assessment-player/?review=topic&amp;topic=Writing&amp;source=combined">Review →</a></footer></article>
+<article><button type="button" aria-expanded="false"><span><small>TOPIC</small><b>Vocabulary</b><span>Vocabulary is performing well in the current evidence.</span></span><span><em class="strong">Strong</em><strong>73%</strong><i></i></span></button><div><p>Vocabulary is currently performing well. Keep it active while prioritising lower-scoring topics.</p><small>Combined from submitted School Assessment and Challenge Practice questions.</small></div><footer class="playbook-row-action"><a href="../..//eval/assessment-player/?review=topic&amp;topic=Vocabulary&amp;source=combined">Review →</a></footer></article>
+</div>
+<details class="playbook-insufficient"><summary><span><i>i</i><b>2 topics need more evidence</b></span><i class="playbook-insufficient-chevron"></i></summary><div><p>Complete more questions in these topics to unlock a reliable insight:</p><ul><li><span><b>Text-based reading</b><small>Not enough scored questions yet</small></span><a href="../..//eval/assessment-player/?flow=practice&amp;pack=english-reading&amp;autostart=1">Practise Text-based reading →</a></li><li><span><b>Summary writing</b><small>Not enough scored questions yet</small></span><a href="../..//eval/assessment-player/?flow=practice&amp;pack=english-reading&amp;autostart=1">Practise Summary writing →</a></li></ul></div></details>
+<p class="topic-component-note">Review opens submitted questions for the topic across School Assessment and Challenge Practice.</p>
+</article>
+<div class="monthly-demo">
+<article class="current">
+<small>LATEST · JUL</small>
+<b>Level 3</b>
+<span>8/8 completed<br>75% score</span>
+</article>
+<article>
+<small>JUN</small>
+<b>Level 3</b>
+<span>9/10 completed<br>70% score</span>
+</article>
+<article>
+<small>MAY</small>
+<b>Level 3</b>
+<span>6/8 completed<br>67% score</span>
+</article>
+<article>
+<small>APR</small>
+<b>Level 3</b>
+<span>8/8 completed<br>76% score</span>
+</article>
+</div>
+</section>
+<section>
+<h2>Teacher data components</h2>
+<p class="section-note">School/class KPI, table, progress, distribution and student row patterns.</p>
+<div class="teacher-samples">
+<article class="teacher-kpi-sample">
+<small>ACTIVE STUDENTS</small>
+<b>54</b>
+<p>Previous 90 days</p>
+</article>
+<article class="teacher-kpi-sample">
+<small>OVERALL COMPLETION</small>
+<b>82%</b>
+<p>Across visible classes</p>
+</article>
+<article class="distribution-card">
+<h3>Student level distribution</h3>
+<div>
+<span>Level 3</span>
+<i>
+<b style="width:63%">
+</b>
+</i>
+<strong>38 · 63%</strong>
+</div>
+<div>
+<span>Level 2</span>
+<i>
+<b style="width:30%">
+</b>
+</i>
+<strong>18 · 30%</strong>
+</div>
+</article>
+</div>
+<article class="topic-insight-component teacher-topic-example">
+<header><span>AI</span><div><h3>Teacher topic insight</h3><p>Individual-student analysis. Practice actions are intentionally omitted.</p></div><span class="playbook-mastery-help">How mastery works <i>i</i><span>Mastery is calculated from the selected student's scored questions for the topic and period.</span></span></header>
+<div class="topic-playbook-list">
+<article class="expanded"><button type="button" aria-expanded="true"><span><small>PRIORITY TOPIC</small><b>Arc lengths and areas of sectors</b><span>The clearest opportunity in the current evidence. Review the underlying concepts and monitor the next scored set.</span></span><span><em>Needs practice</em><strong>23%</strong><i></i></span></button><div><div class="playbook-analysis-grid"><section><h4>Mistake pattern analysis</h4><p>The scored responses suggest confusion between arc-length and sector-area formulas.</p></section><section><h4>Skill mastery analysis</h4><p>The available evidence points to a foundational gap.</p></section><section><h4>Teaching suggestion</h4><p>Use one worked example followed by a short independent check.</p></section></div><small>Based on this student's scored questions in the selected subject and period.</small></div></article>
+</div>
+<details class="playbook-insufficient"><summary><span><i>i</i><b>2 topics need more evidence</b></span><i class="playbook-insufficient-chevron"></i></summary><div><p>More scored responses are needed before a reliable topic insight can be shown:</p><ul><li><span><b>Probability</b><small>Not enough scored questions yet</small></span></li><li><span><b>Similarity and congruence</b><small>Not enough scored questions yet</small></span></li></ul></div></details>
+</article>
+<div class="table-sample">
+<div class="table-head">
+<span>STUDENT</span>
+<span>CLASS</span>
+<span>ACTIVITY</span>
+<span>SCORE</span>
+</div>
+<div class="table-row">
+<span>
+<b>Ava Lau</b>
+<small>ST26001</small>
+</span>
+<span>Class 1A</span>
+<span class="positive">↑ 94%</span>
+<span>
+<b>84%</b>
+</span>
+</div>
+<div class="table-row">
+<span>
+<b>Noah Lee</b>
+<small>ST26004</small>
+</span>
+<span>Class 1B</span>
+<span class="negative">↓ 66%</span>
+<span>
+<b>69%</b>
+</span>
+</div>
+</div>
+</section>
+<section>
+<h2>Navigation and account</h2>
+<div class="navigation-samples">
+<aside class="mini-sidebar">
+<b>EXAI</b>
+<small>HOME</small>
+<a class="active">Assessments</a>
+<a>Practices</a>
+<a>Results</a>
+<a>Performance</a>
+</aside>
+<div class="nav-content">
+<div class="mini-topbar">
+<span>KOKO Secondary School</span>
+<button>English⌄</button>
+<button>Account⌄</button>
+</div>
+<div class="breadcrumbs">
+<a>Classes</a>
+<span>›</span>
+<a>Class 1A</a>
+<span>›</span>
+<b>Ava Lau</b>
+</div>
+<div class="account-menu-sample">
+<header><b>Accounts and roles</b><button aria-label="Close">×</button></header>
+<div class="account-admin-line"><span>EXAI account</span><b>Admin</b><small>Account-level privilege · not a separate product view</small></div>
+<button class="context-option"><b>EXAI · Teacher</b><span>Class 5A · Math Olympiad</span></button>
+<button class="context-option"><b>EXAI · Student</b><span>Class 5A · Math Olympiad</span></button>
+<footer><button>Profile</button><button>Log out</button></footer>
+</div>
+<div class="mobile-account-sheet"><header><b>Accounts and roles</b><button aria-label="Close">×</button></header><p>Mobile uses a full-width bottom sheet so organisation and class names are never squeezed into the top bar.</p></div>
+<div class="branding-samples"><article><b>EXAI</b><span>Inherited branding always uses EXAI</span></article><article><b>School logo or safe wordmark</b><span>Custom logo area</span><small>Powered by EXAI</small></article></div>
+</div>
+</div>
+<article class="accounts-playbook-card"><h3>Your accounts and roles</h3><p>Uses the same context options as the avatar menu.</p><button class="context-option active"><b>EXAI · Student</b><span>Class 5A · Math Olympiad</span><i>✓</i></button><button class="context-option"><b>EXAI · Teacher</b><span>Class 5A · Math Olympiad</span></button><div class="reset-playbook"><b>Reset EXAI demo-account data</b><p>Account-scoped and shown once only when accountCapabilities.canResetDemo is granted, including while an eligible account views another role. Preview generated papers, assignments, attempts, responses, practice activity and results. Organisations, roles, memberships, classes and the baseline dummy roster remain.</p><button>Preview reset</button></div></article>
+</section>
+<section>
+<h2>Forms, profile and security</h2>
+<div class="profile-grid">
+<article class="profile-card">
+<div class="avatar">AL</div>
+<div>
+<h3>Ava Lau</h3>
+<p>ava@example.edu · Student · Class 1A</p>
+</div>
+<div class="notice">
+<b>Account access</b>
+<p>Roles and school membership are managed by an administrator.</p>
+</div>
+</article>
+<form class="security-form">
+<label>Current password<input type="password" value="password">
+</label>
+<label>New password<input type="password" placeholder="At least 8 characters">
+</label>
+<label>Confirm new password<input type="password" placeholder="Repeat new password">
+</label>
+<button class="primary" type="button">Update password</button>
+<span class="form-message">Password requirements and inline validation appear here.</span>
+</form>
+</div>
+</section>
+<section>
+<h2>System and content states</h2>
+<div class="state-grid">
+<article class="empty-state">
+<b>No assessments found</b>
+<p>Try another subject or search.</p>
+</article>
+<article class="loading-state">
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<span>Loading assessment…</span>
+</article>
+<article class="error-state">
+<span class="badge bad">ERROR</span>
+<b>Unable to load this paper</b>
+<button>Try again</button>
+</article>
+<article class="permission-state"><span class="badge warn">NO ACCESS</span><b>You do not have access to this page</b><p>Global navigation remains available so another page or account context can be selected.</p></article>
+<article class="empty-state"><b>No visible classes</b><p>Classes assigned to this teacher will appear here.</p></article>
+<article class="error-state"><span class="badge bad">CONTEXT ERROR</span><b>Account context could not be loaded</b><p>Keep the shell available and offer one retry without a redirect loop.</p><button>Try again</button></article>
+<article>
+<span class="badge warn">AWAITING REVIEW</span>
+<h3>Teacher review pending</h3>
+<p>Your result will appear after it is released.</p>
+</article>
+</div>
+</section>
+<section>
+<h2>Overlays and transient surfaces</h2>
+<div class="overlay-grid">
+<article class="drawer-sample">
+<header>
+<div>
+<small>ASSESSMENT RESULT</small>
+<h3>DSE English Reading</h3>
+</div>
+<button>×</button>
+</header>
+<div>
+<strong>79%</strong>
+<span>OVERALL RESULT</span>
+</div>
+<button class="primary">Review answers</button>
+</article>
+<article class="modal-sample">
+<h3>Submit assessment?</h3>
+<p>2 questions are unanswered. Answers cannot be changed after submission.</p>
+<footer>
+<button>Return to review</button>
+<button class="primary">Submit assessment</button>
+</footer>
+</article>
+<article class="calendar-sample">
+<header>
+<b>August 2026</b>
+<small>Select start and end dates</small>
+</header>
+<div>
+<b>S</b>
+<b>M</b>
+<b>T</b>
+<b>W</b>
+<b>T</b>
+<b>F</b>
+<b>S</b>
+<span>9</span>
+<span class="range">10</span>
+<span class="range">11</span>
+<span class="range">12</span>
+<span class="range">13</span>
+<span class="range">14</span>
+<span>15</span>
+</div>
+</article>
+</div>
+</section>
+<section>
+<h2>Navigation, filters and pagination</h2>
+<nav class="tabs">
+<button class="active">School assessments</button>
+<button>Challenge practice</button>
+</nav>
+<div class="filter-tabs-playbook">
+<button class="active">All assigned <span>5</span>
+</button>
+<button>Due soon <span>3</span>
+</button>
+<button>In progress <span>1</span>
+</button>
+</div>
+<div class="pagination">
+<button disabled>Previous</button>
+<span>1–10 of 24</span>
+<button>Next</button>
+</div>
+</section>
+</main>
+<aside class="supplemental-playbook">
+<section>
+<h2>Additional test-taking states</h2>
+<div class="advanced-test-grid">
+<article class="cover-sample">
+<span class="eyebrow">ASSESSMENT</span>
+<h3>DSE English — Reading &amp; Listening</h3>
+<p>Complete the paper before the timer ends.</p>
+<div>
+<b>42 minutes</b>
+<span>The paper submits automatically when time ends.</span>
+</div>
+<div>
+<b>10 questions</b>
+<span>Move between questions and revisit answers.</span>
+</div>
+<button class="primary">Start assessment</button>
+</article>
+<article class="math-sample">
+<span class="badge info">QUESTION 4 OF 10</span>
+<h3>Solve for the gradient of the line.</h3>
+<div class="formula">m = (y₂ − y₁) ÷ (x₂ − x₁)</div>
+<div class="diagram">y<br>│&nbsp;&nbsp;&nbsp;&nbsp;╱<br>│&nbsp;&nbsp;╱<br>└──── x</div>
+<button>Show formula reference</button>
+</article>
+<article class="review-sample">
+<h3>Review your answers</h3>
+<div>
+<span>1</span>
+<p>
+<b>Question 1</b>
+<small>Answer: Buildings release stored heat slowly</small>
+</p>
+<em class="badge good">ANSWERED</em>
+</div>
+<div>
+<span>2</span>
+<p>
+<b>Question 2</b>
+<small>No answer submitted</small>
+</p>
+<em class="badge warn">UNANSWERED</em>
+</div>
+<footer>
+<button>Return to paper</button>
+<button class="primary">Submit assessment</button>
+</footer>
+</article>
+</div>
+</section>
+<section>
+<h2>Specialised data visualisations</h2>
+<div class="visual-grid">
+<article>
+<h3>Assessment activity</h3>
+<div class="stacked-bars">
+<i>
+<b style="height:55%">
+</b>
+<span style="height:25%">
+</span>
+</i>
+<i>
+<b style="height:68%">
+</b>
+<span style="height:18%">
+</span>
+</i>
+<i>
+<b style="height:73%">
+</b>
+<span style="height:14%">
+</span>
+</i>
+<i>
+<b style="height:82%">
+</b>
+<span style="height:10%">
+</span>
+</i>
+</div>
+<p>Completed and open assessments by month</p>
+</article>
+<article>
+<h3>Level composition</h3>
+<div class="level-strip">
+<i style="width:18%">
+</i>
+<i style="width:30%">
+</i>
+<i style="width:42%">
+</i>
+<i style="width:10%">
+</i>
+</div>
+<div class="legend-row">
+<span>Level 1</span>
+<span>Level 2</span>
+<span>Level 3</span>
+<span>Level 4+</span>
+</div>
+</article>
+<article>
+<h3>Student heat map</h3>
+<div class="heat-map">
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+</div>
+<p>Compact roster-level distribution pattern</p>
+</article>
+</div>
+</section>
+</aside>
+<script>const playbookThemeKey='exai-playbook-theme',playbookSizeKey='exai-playbook-size';theme.value=localStorage.getItem(playbookThemeKey)||'light';size.value=localStorage.getItem(playbookSizeKey)||'medium';document.documentElement.dataset.theme=theme.value;document.documentElement.dataset.size=size.value;theme.onchange=e=>{document.documentElement.dataset.theme=e.target.value;localStorage.setItem(playbookThemeKey,e.target.value)};size.onchange=e=>{document.documentElement.dataset.size=e.target.value;localStorage.setItem(playbookSizeKey,e.target.value)};const componentSelect=document.querySelector('#componentSelect'),selectButton=componentSelect.firstElementChild;selectButton.onclick=()=>{const open=componentSelect.classList.toggle('open');selectButton.setAttribute('aria-expanded',open)};componentSelect.querySelectorAll('[data-value]').forEach(option=>option.onclick=()=>{selectButton.firstElementChild.textContent=option.dataset.value;componentSelect.querySelector('.selected')?.classList.remove('selected');option.classList.add('selected');componentSelect.classList.remove('open');selectButton.setAttribute('aria-expanded','false')});</script>
+</body>
+</html>
