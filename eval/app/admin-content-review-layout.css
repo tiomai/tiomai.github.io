@@ -1,0 +1,12 @@
+.review-player-frame{overflow:visible}
+.review-test-layout{align-items:start;min-height:0}
+.review-student-question,.review-test-source{min-height:100%}
+.review-answer-area,.review-option-group{min-height:0;overflow:visible}
+.review-drawer-identity{display:grid;gap:3px;min-width:0}
+.review-drawer-identity>div{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.review-drawer-identity>span{color:#707a89;font-size:11px}
+.review-drawer-controls{display:flex;align-items:center;gap:8px}
+.review-drawer-controls>button:not(.review-close){padding:8px 11px;border:1px solid #ccd8ef;border-radius:8px;background:#fff;color:#245fe0;font-weight:700}
+.review-drawer-controls>button:disabled{opacity:.4}
+html[data-exai-theme=dark] .review-drawer-controls>button:not(.review-close){border-color:#495160;background:#20242c;color:#8eb0ff}
+@media(max-width:620px){.review-drawer>header{align-items:flex-start}.review-drawer-controls>button:not(.review-close){padding:7px 8px;font-size:10px}.review-drawer-identity>div{max-width:42vw}}
