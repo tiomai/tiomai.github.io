@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded',async()=>{
     const client=window.supabase.createClient(config.url,config.publishableKey),{data:{session}}=await client.auth.getSession();
     if(!session){location.replace(login);return}
   }
-  if(!window.EXAI_CONTEXT_READY){const script=document.createElement('script');script.src=compiled?'/eval/app/context-bootstrap.js?v=20260912-4':'app/context-bootstrap.js?v=20260912-4';document.head.append(script);await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject})}
+  if(!window.EXAI_CONTEXT_READY){const script=document.createElement('script');script.src=compiled?'/eval/app/context-bootstrap.js':'app/context-bootstrap.js';document.head.append(script);await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject})}
   const provider=await window.EXAI_CONTEXT_READY,snapshot=provider.getSnapshot().status==='ready'?provider.getSnapshot():await provider.load();
   if(snapshot.status!=='ready')return;
   const context=snapshot.activeContext,params=new URLSearchParams(location.search),routeKey=provider.currentRoute(),route=provider.routes[routeKey];
