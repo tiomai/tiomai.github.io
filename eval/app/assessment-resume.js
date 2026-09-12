@@ -1,5 +1,8 @@
 window.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('button').forEach(button=>{
-    if(/^Continue(?: assessment)?/.test(button.textContent.trim()))button.onclick=()=>location.href=button.closest('.next-card')?'/eval/practice-player/?mode=assessment&pack=math-s4&resume=1':'/eval/assessment-player/?flow=paper&resume=1';
-  });
+  const host=document.querySelector('.assessment-list,.assessments-list,#assessmentList'),recommended=document.querySelector('.next-card'),search=document.querySelector('#search'),subject=document.querySelector('#subject');
+  if(host&&!host.dataset.viewModel)host.replaceChildren();
+  if(recommended&&!host?.dataset.viewModel)recommended.hidden=true;
+  if(search)search.oninput=null;
+  if(subject)subject.onchange=null;
+  document.querySelectorAll('.filter-tabs [data-filter]').forEach(button=>button.onclick=null);
 });

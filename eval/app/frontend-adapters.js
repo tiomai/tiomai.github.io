@@ -1,14 +1,14 @@
 (function(){
   const wait=value=>Promise.resolve(structuredClone(value));
-  const userKey=()=>localStorage.getItem('exai_demo_user')||'standard';
+  const previewContext={membershipId:'preview-student',organisationId:'preview-organisation',organisationName:'EXAI Preview',role:'student',classes:[],capabilities:{canViewStudents:false,canViewResults:true,canAssign:false,canReview:false}};
   let backendClient;
   const isUuid=value=>/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value||'');
   const backend=()=>{
-    if(location.protocol==='file:'||['localhost','127.0.0.1'].includes(location.hostname))return null;
     const config=window.EXAI_SUPABASE_CONFIG||{};
     if(!window.supabase?.createClient||!config.url||!config.publishableKey)return null;
     return backendClient||(backendClient=window.supabase.createClient(config.url,config.publishableKey));
   };
+  const previewOnly=()=>!backend();
   const callRpc=async(name,args)=>{
     const client=backend();
     if(!client)return null;
@@ -28,39 +28,45 @@
     }
     return {displayName:'Account',email:'signed-in account'};
   };
-  const previewContexts=[
-      {membershipId:'mem-exai-admin',organisationId:'org-exai',organisationName:'EXAI',role:'administrator',classes:[],capabilities:{canViewStudents:true,canViewResults:true,canAssign:true,canReview:true}},
-      {membershipId:'mem-exai-teacher',organisationId:'org-exai',organisationName:'EXAI',role:'teacher',classes:[{id:'class-5a',name:'Class 5A'},{id:'class-math-olympiad',name:'Math Olympiad'}],capabilities:{canViewStudents:true,canViewResults:true,canAssign:true,canReview:true}},
-      {membershipId:'mem-exai-student',organisationId:'org-exai',organisationName:'EXAI',role:'student',classes:[{id:'class-5a',name:'Class 5A'},{id:'class-math-olympiad',name:'Math Olympiad'}],capabilities:{canViewStudents:false,canViewResults:true,canAssign:false,canReview:false}}
-    ];
-  const contexts={
-    preview:previewContexts,
-    t1:[{membershipId:'mem-exai-t1-teacher',organisationId:'org-exai',organisationName:'EXAI',role:'teacher',classes:[],capabilities:{canViewStudents:true,canViewResults:true,canAssign:true,canReview:true}}],
-    standard:[{membershipId:'mem-exai-standard-student',organisationId:'org-exai',organisationName:'EXAI',role:'student',classes:[],capabilities:{canViewStudents:false,canViewResults:true,canAssign:false,canReview:false}}]
-  };
-  const branding={
-    'org-exai':{mode:'inherited',logoUrl:'public/exai-assets/logo.svg',poweredByExai:false},
-    'org-koko':{mode:'custom',logoUrl:null,poweredByExai:true}
+  const requireBackend=()=>{const client=backend();if(!client)throw new Error('The data service is unavailable.');return client};
+  const loadContexts=async()=>{
+    if(previewOnly())return [previewContext];
+    const client=requireBackend(),{data:{user}}=await client.auth.getUser();
+    if(!user)throw new Error('Authentication required.');
+    const {data,error}=await client.from('organisation_memberships').select('id,organisation_id,role,display_name').eq('user_id',user.id).eq('status','active');
+    if(error)throw error;
+    const organisationIds=[...new Set((data||[]).map(row=>row.organisation_id))],membershipIds=(data||[]).map(row=>row.id);
+    const [{data:organisations,error:organisationError},{data:classLinks,error:classError}]=await Promise.all([organisationIds.length?client.from('organisations').select('id,name,slug').in('id',organisationIds):Promise.resolve({data:[]}),membershipIds.length?client.from('class_memberships').select('organisation_membership_id,class_id').in('organisation_membership_id',membershipIds).eq('status','active'):Promise.resolve({data:[]})]);
+    if(organisationError)console.warn('Organisation names could not be loaded.',organisationError);if(classError)console.warn('Class memberships could not be loaded.',classError);
+    const usableClassLinks=classError?[]:(classLinks||[]),classIds=[...new Set(usableClassLinks.map(item=>item.class_id))],{data:classes,error:classesError}=classIds.length?await client.from('classes').select('id,name').in('id',classIds):{data:[]};if(classesError)console.warn('Class names could not be loaded.',classesError);const organisationsById=new Map((organisations||[]).map(item=>[item.id,item])),classesById=new Map((classes||[]).map(item=>[item.id,item]));
+    return (data||[]).map(row=>{const organisation=organisationsById.get(row.organisation_id),memberClasses=usableClassLinks.filter(item=>item.organisation_membership_id===row.id).map(item=>classesById.get(item.class_id)).filter(Boolean);return {membershipId:row.id,organisationId:row.organisation_id,organisationName:organisation?.name||'Organisation',role:row.role,classes:memberClasses,capabilities:{canViewStudents:['teacher','administrator','school_admin'].includes(row.role),canViewResults:true,canAssign:['teacher','administrator','school_admin'].includes(row.role),canReview:['teacher','administrator','school_admin'].includes(row.role)}}});
   };
   const accountResetCapabilities={
     rpc:'account_reset_capabilities',
     async get({organisationId}={}){
-      const availableContexts=contexts[userKey()]||contexts.t1,administrator=availableContexts.find(item=>item.organisationId===organisationId&&['administrator','school_admin'].includes(item.role));
+      const availableContexts=await loadContexts(),administrator=availableContexts.find(item=>item.organisationId===organisationId&&['administrator','school_admin'].includes(item.role));
+      if(organisationId===previewContext.organisationId)return wait({canResetDemo:false,canResetLearningItem:false,administratorMembershipId:null});
       const client=backend();
       if(client&&isUuid(organisationId)){const {data,error}=await client.rpc(this.rpc,{requested_organisation_id:organisationId});if(error)throw error;return {...data,administratorMembershipId:administrator?.membershipId||null}}
-      return wait({canResetDemo:!!administrator,canResetLearningItem:!!administrator,administratorMembershipId:administrator?.membershipId||null});
+      throw new Error('Reset capabilities require the data service.');
     }
   };
   const accountContext={
     async get(){
-      const key=userKey(),availableContexts=contexts[key]||contexts.t1,stored=localStorage.getItem(`exai_active_membership_${key}`),activeContext=availableContexts.find(item=>item.membershipId===stored)||availableContexts[0];
-      const accountCapabilities=await accountResetCapabilities.get({organisationId:activeContext.organisationId});
-      const identity=await accountIdentity(key);
-      return wait({user:{id:identity.id||`demo-${key}`,...identity},activeContext,availableContexts,accountCapabilities,branding:branding[activeContext.organisationId]||branding['org-exai'],locale:localStorage.getItem('exai_locale')||'en'});
+      const availableContexts=await loadContexts(),stored=localStorage.getItem('exai_active_membership'),activeContext=availableContexts.find(item=>item.membershipId===stored)||availableContexts[0];
+      if(!activeContext)throw new Error('No active organisation membership is available.');
+      let accountCapabilities={canResetDemo:false,canResetLearningItem:false,administratorMembershipId:null};
+      try{accountCapabilities=await accountResetCapabilities.get({organisationId:activeContext.organisationId})}catch(error){console.warn('Optional account reset capabilities could not be loaded.',error)}
+      const identity=await accountIdentity();
+      if(activeContext.membershipId===previewContext.membershipId)return wait({user:{id:'preview-account',...identity},activeContext,availableContexts,accountCapabilities,branding:{mode:'inherited',logoUrl:'public/exai-assets/logo.svg',poweredByExai:false},locale:localStorage.getItem('exai_locale')||'en'});
+      const client=requireBackend();let brand=null;
+      try{const result=await client.from('organisation_branding').select('logo_url').eq('organisation_id',activeContext.organisationId).maybeSingle();if(result.error)throw result.error;brand=result.data}catch(error){console.warn('Optional organisation branding could not be loaded.',error)}
+      const branding=brand?.logo_url?{mode:'custom',logoUrl:brand.logo_url,poweredByExai:true}:{mode:'inherited',logoUrl:'public/exai-assets/logo.svg',poweredByExai:false};
+      return wait({user:{id:identity.id,...identity},activeContext,availableContexts,accountCapabilities,branding,locale:localStorage.getItem('exai_locale')||'en'});
     },
     async switchContext(membershipId){
       const current=await this.get(),next=current.availableContexts.find(item=>item.membershipId===membershipId);if(!next)throw new Error('Account context is no longer available.');
-      localStorage.setItem(`exai_active_membership_${userKey()}`,membershipId);
+      localStorage.setItem('exai_active_membership',membershipId);
       return this.get();
     },
     async retry(){return this.get()},
@@ -73,52 +79,20 @@
       return true;
     }
   };
-  const discardedAttempts=new Set(),invalidatedSnapshots=new Set();
-  const weeklyEnglishAssignments=Array.from({length:10},(_,week)=>{
-    const available=new Date(Date.UTC(2026,6,6+(week*7))),weekLabel=String(week+1).padStart(2,'0');
-    const common={subject:'English',assignedByOrganisationName:'EXAI',organisationClassLabel:'EXAI · Class 5A',availableAt:available.toISOString(),deadlineAt:'2026-10-31T15:59:59Z',deadlineLabel:'Sat, 31 Oct',urgencyLabel:'Open until 31 Oct',attemptId:null,attemptStatus:'not_started',requirement:'required',state:'available',action:{kind:'start',label:'Start'}};
-    return [
-      {...common,studentAssignmentId:`sa-reading-w${weekLabel}`,packSlug:'assessment-english-reading',title:`English Reading · Week ${week+1}`,durationLabel:'25 min',skillsLabel:'Reading · 15 questions',remainingSeconds:1500},
-      {...common,studentAssignmentId:`sa-listening-w${weekLabel}`,packSlug:'assessment-english-listening',title:`English Listening · Week ${week+1}`,durationLabel:'25 min',skillsLabel:'Listening · 15 questions',remainingSeconds:1500},
-      {...common,studentAssignmentId:`sa-dse-reading-w${weekLabel}`,packSlug:'dse-reading',title:`DSE English Reading · Week ${week+1}`,durationLabel:'50 min',skillsLabel:'One complete reading passage',remainingSeconds:3000}
-    ];
-  }).flat();
-  const assignmentFixtures=[
-    ...weeklyEnglishAssignments,
-    {studentAssignmentId:'sa-math-s4-2026',attemptId:'attempt-sa-math-s4-2026',title:'Math S4',subject:'Math',organisationClassLabel:'EXAI · Math Olympiad',availableAt:'2026-08-18T00:00:00Z',deadlineAt:'2026-08-24T15:59:59Z',deadlineLabel:'Fri, 24 Aug',urgencyLabel:'Due in 2 days',durationLabel:'40 min',skillsLabel:'Algebra · Number',progressPercent:35,attemptStatus:'in_progress',remainingSeconds:1560,requirement:'required',state:'available',action:{kind:'continue',label:'Continue'}},
-    {studentAssignmentId:'sa-screening-test',packSlug:'screening-test',attemptId:null,title:'Screening Test',subject:'English',organisationClassLabel:'EXAI · Class 5A',availableAt:'2026-08-20T00:00:00Z',deadlineAt:null,deadlineLabel:'No deadline',durationLabel:'Untimed',skillsLabel:'70 Junior English questions · 1 DSE reading passage',attemptStatus:'not_started',remainingSeconds:null,requirement:'optional',state:'available',action:{kind:'start',label:'Start'}}
-  ];
-  const studentAssignments={async list(){const caps=await accountResetCapabilities.get({organisationId:'org-exai'}),items=assignmentFixtures.map(item=>discardedAttempts.has(item.attemptId)?{...item,attemptId:null,attemptStatus:'not_started',state:'available',remainingSeconds:3000,action:{kind:'start',label:'Start'}}:item).map(item=>({...item,resetEligibility:{allowed:Boolean(caps.canResetLearningItem&&item.attemptId&&item.attemptStatus==='in_progress'),reason:item.attemptStatus!=='in_progress'?'Only started, incomplete activity can be reset.':!item.attemptId?'This legacy activity is not linked to an attempt and cannot be reset safely.':caps.canResetLearningItem?null:'An administrator membership is required.'}}));return wait({items,pageInfo:{endCursor:null,hasNextPage:false}})}};
-  const studentPractice={async listEntitled(){const expired=localStorage.getItem('exai_demo_subscription')==='expired',all=[
-    {packId:'pack-straight-lines',title:'Equations of straight lines',subject:'Math',icon:'∑',questionCount:10,estimatedMinutes:30,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'pack-trigonometry',title:'Trigonometry I',subject:'Math',icon:'△',questionCount:10,estimatedMinutes:30,state:'in_progress',attemptId:'attempt-practice-trigonometry',practiceSessionId:'practice-trigonometry',action:{kind:'continue',label:'Continue'}},
-    {packId:'pack-circles',title:'Basic properties of circles',subject:'Math',icon:'○',questionCount:10,estimatedMinutes:30,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'pack-dispersion',title:'Measures of dispersion',subject:'Math',icon:'%',questionCount:10,estimatedMinutes:30,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'english-vocabulary',title:'Vocabulary',subject:'English',icon:'Aa',questionCount:10,estimatedMinutes:20,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'english-grammar',title:'Grammar',subject:'English',icon:'Aa',questionCount:10,estimatedMinutes:20,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'english-reading',title:'Reading',subject:'English',icon:'R',questionCount:10,estimatedMinutes:20,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'english-listening',title:'Listening',subject:'English',icon:'♫',questionCount:10,estimatedMinutes:20,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'dse-reading',title:'DSE Reading',subject:'English',icon:'DSE',questionCount:33,estimatedMinutes:50,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'jlpt-n5-grammar',title:'N5の文法',subject:'Japanese',icon:'日',questionCount:8,estimatedMinutes:15,state:'available',action:{kind:'start',label:'Start Challenge'}},
-    {packId:'jlpt-n5-vocab-grammar',title:'N5の語彙と文法',subject:'Japanese',icon:'日',questionCount:8,estimatedMinutes:15,state:'available',action:{kind:'start',label:'Start Challenge'}}
-  ];const caps=await accountResetCapabilities.get({organisationId:'org-exai'}),visible=expired?all.filter(item=>item.state==='completed'):all;return wait({items:visible.map(raw=>discardedAttempts.has(raw.attemptId)?{...raw,attemptId:null,practiceSessionId:null,state:'available',action:{kind:'start',label:'Start Challenge'}}:raw).map(item=>({...item,resetEligibility:{allowed:Boolean(caps.canResetLearningItem&&item.attemptId&&['in_progress','completed'].includes(item.state)),reason:item.attemptId?(caps.canResetLearningItem?null:'An administrator membership is required.'):'This practice is not linked to an attempt and cannot be reset safely.'}})),subscription:{state:expired?'expired':'active',message:expired?'Existing completed packs remain available for review.':null}})}};
-  const resultFixtures={released:[],awaiting_review:[],not_submitted_expired:[]};
-  const studentResults={async list({population='released',cursor=null}={}){const caps=await accountResetCapabilities.get({organisationId:'org-exai'}),items=(resultFixtures[population]||[]).filter(item=>!item.invalidated&&!invalidatedSnapshots.has(item.resultId)&&!discardedAttempts.has(item.attemptId)).map(item=>({...item,resetEligibility:{allowed:Boolean(caps.canResetLearningItem&&item.attemptId),reason:item.attemptId?(caps.canResetLearningItem?null:'An administrator membership is required.'):'This legacy result is not linked to an attempt and cannot be reset safely.'}}));return wait({population,items,pageInfo:{endCursor:cursor,hasNextPage:false},reviewPolicy:{paperAvailable:population==='released',answersAvailable:population==='released'}})}};
-  const performanceFixture={metrics:{completed:33,assigned:58,weightedAverage:74,currentLevel:'Level 2',activityRate:91},monthlySummary:[{period:'Jul',level:'Level 3',completed:8,assigned:8,weightedAverage:75},{period:'Jun',level:'Level 3',completed:9,assigned:10,weightedAverage:70},{period:'May',level:'Level 3',completed:6,assigned:8,weightedAverage:67},{period:'Apr',level:'Level 3',completed:8,assigned:8,weightedAverage:76}],trend:[{period:'Apr',value:76},{period:'May',value:67},{period:'Jun',value:70},{period:'Jul',value:75}],englishSkills:[{name:'Vocabulary',value:73,previousValue:68},{name:'Grammar',value:44,previousValue:52},{name:'Reading',value:83,previousValue:78},{name:'Listening',value:86,previousValue:81},{name:'Writing',value:68,previousValue:64}],mathTopics:[{name:'Algebraic expressions',value:81},{name:'Linear equations',value:78},{name:'Percentages',value:74},{name:'Geometry',value:58},{name:'Statistics',value:76},{name:'Probability',value:64},{name:'Trigonometry',value:61}],insights:[{label:'PERFORMANCE SIGNAL',title:'Reading is currently strongest',body:'Grammar has enough scored evidence to recommend focused work on sentence structure and tense.'},{label:'FOCUS NEXT',title:'Grammar',body:'Complete another targeted set to strengthen the evidence.'}],dataConfidence:{level:'Developing',body:'Recommendations improve as more scored questions are completed.'},assessmentResults:[{resultId:'result-listening',title:'Daily Assessment · Listening',subject:'English listening',submittedAt:'27 Jul 2026',status:'released',score:84,reviewHref:'/eval/assessment-player/?review=result&pack=english-listening&viewer=teacher'},{resultId:'result-reading',title:'Daily Assessment · Reading',subject:'English reading',submittedAt:'27 Jul 2026',status:'released',score:76,reviewHref:'/eval/assessment-player/?review=result&pack=dse-reading&viewer=teacher'},{resultId:'result-expired-writing',title:'English Writing · Extended response',subject:'English writing',closedAt:'18 Jul 2026',status:'not_submitted_expired',score:null},{resultId:'result-expired-math',title:'Math S4 · Geometry',subject:'Mathematics',closedAt:'11 Jul 2026',status:'not_submitted_expired',score:null}]};
-  const studentPerformance={async get(){return wait({...performanceFixture,viewer:{canViewAssessmentResults:false},source:'backend_aggregate'})}};
-  const classFixtures=[{classId:'class-5a',membershipId:'membership-class-5a',name:'Class 5A',studentCount:4,currentMonth:90,lastMonth:84,overall:79,open:8,expired:12},{classId:'class-math-olympiad',membershipId:'membership-math-olympiad',name:'Math Olympiad',studentCount:2,currentMonth:75,lastMonth:71,overall:67,open:3,expired:2}];
-  const studentFixtures=[{studentId:'student-ava-lau',membershipId:'membership-ava-5a',classId:'class-5a',className:'Class 5A',displayName:'Ava Lau',externalReference:'ST26001',currentMonth:89,lastMonth:82,overall:91,activityRate:94,score:84,completed:54,assigned:58},{studentId:'student-ethan-wong',membershipId:'membership-ethan-5a',classId:'class-5a',className:'Class 5A',displayName:'Ethan Wong',externalReference:'ST26002',currentMonth:83,lastMonth:78,overall:88,activityRate:88,score:78,completed:51,assigned:58},{studentId:'student-mia-chan',membershipId:'membership-mia-5a',classId:'class-5a',className:'Class 5A',displayName:'Mia Chan',externalReference:'ST26003',currentMonth:76,lastMonth:79,overall:84,activityRate:81,score:76,completed:49,assigned:58},{studentId:'student-noah-lee',membershipId:'membership-noah-math',classId:'class-math-olympiad',className:'Math Olympiad',displayName:'Noah Lee',externalReference:'ST26004',currentMonth:61,lastMonth:72,overall:73,activityRate:62,score:68,completed:42,assigned:58}];
-  const teacherClasses={async list(){return wait({items:classFixtures})}};
-  const teacherStudents={async list({classId}={}){return wait({classId,items:studentFixtures.filter(item=>!classId||item.classId===classId)})}};
-  const teacherResults={async list({cursor=null}={}){return wait({items:[],pageInfo:{endCursor:cursor,hasNextPage:false}})}};
-  const teacherPerformance={async getStudent({studentId}={}){const result=await studentPerformance.get();return {...result,studentId,viewer:{canViewAssessmentResults:true}}}};
-  const attemptStore=new Map();
+  const studentAssignments={async list(){const data=await callRpc('list_student_assignments',{});if(!data)throw new Error('The assignment catalogue service is unavailable.');return data}};
+  const studentPractice={async listEntitled(){const data=await callRpc('list_entitled_packs',{requested_mode:'challenge'});return {items:(data||[]).map(item=>({packId:item.pack_id,title:item.pack_title,subject:item.subject_title,questionCount:item.question_count??null,estimatedMinutes:item.time_limit_seconds?Math.ceil(item.time_limit_seconds/60):null,state:item.access_state,attemptId:item.active_attempt_id,action:{kind:item.access_state==='in_progress'?'continue':'start',label:item.access_state==='in_progress'?'Continue':'Start'}})),subscription:{state:'active'}}}};
+  const studentResults={async list({population='released',cursor=null}={}){const data=await callRpc('list_student_results',{requested_population:population,requested_cursor:cursor});return data||{population,items:[],pageInfo:{endCursor:null,hasNextPage:false}}}};
+  const studentPerformance={async get(){return (await callRpc('get_student_performance',{}))||{metrics:null,monthlySummary:[],trend:[],englishSkills:[],mathTopics:[],insights:[],dataConfidence:null,assessmentResults:[],viewer:{canViewAssessmentResults:false}}}};
+  const teacherClasses={async list(){return (await callRpc('list_teacher_classes',{}))||{items:[]}}};
+  const teacherStudents={async list({classId=null}={}){return (await callRpc('list_teacher_students',{requested_class_id:classId}))||{classId,items:[]}}};
+  const teacherResults={async list({cursor=null}={}){return (await callRpc('list_teacher_results',{requested_cursor:cursor}))||{items:[],pageInfo:{endCursor:null,hasNextPage:false}}}};
+  const teacherPerformance={async getStudent({studentId,classId=null,membershipId=null}={}){return (await callRpc('get_teacher_student_performance',{requested_student_id:studentId,requested_class_id:classId,requested_membership_id:membershipId}))||{studentId,metrics:null,monthlySummary:[],trend:[],englishSkills:[],mathTopics:[],insights:[],dataConfidence:null,assessmentResults:[],viewer:{canViewAssessmentResults:true}}}};
   const assessmentPlayer={
     async createOrResume({studentAssignmentId,packId,mode='assessment'}){
-      if(isUuid(packId)&&(studentAssignmentId==null||isUuid(studentAssignmentId))){
-        return callRpc('start_or_resume_attempt',{requested_pack_id:packId,requested_mode:mode,requested_student_assignment_id:studentAssignmentId||null});
+      if(isUuid(studentAssignmentId)||isUuid(packId)){
+        return callRpc('start_or_resume_attempt',{requested_pack_id:isUuid(packId)?packId:null,requested_mode:mode,requested_student_assignment_id:isUuid(studentAssignmentId)?studentAssignmentId:null});
       }
-      const id=studentAssignmentId||packId||'fixture-attempt',attempt=attemptStore.get(id)||{attemptId:`attempt-${id}`,status:'in_progress',responses:{},expiresAt:new Date(Date.now()+50*60*1000).toISOString(),reviewAllowed:false};attemptStore.set(id,attempt);return wait(attempt)
+      throw new Error('A database-backed pack is required to start an attempt.');
     },
     async getQuestion({attemptId,position}){
       if(isUuid(attemptId))return callRpc('get_attempt_question',{requested_attempt_id:attemptId,requested_position:position});
@@ -126,18 +100,18 @@
     },
     async saveResponse({attemptId,attemptItemId,questionId,response}){
       if(isUuid(attemptId)&&isUuid(attemptItemId))return callRpc('save_attempt_response',{requested_attempt_id:attemptId,requested_attempt_item_id:attemptItemId,requested_response:response});
-      const attempt=[...attemptStore.values()].find(item=>item.attemptId===attemptId);if(!attempt)throw new Error('Attempt is unavailable.');attempt.responses[questionId||attemptItemId]=response;return wait({state:'saved',savedAt:new Date().toISOString()})
+      throw new Error('The response could not be linked to a database attempt item.');
     },
     async submit({attemptId,reason='manual',legacyPayload=null}){
       if(isUuid(attemptId))return callRpc('submit_learning_attempt',{requested_attempt_id:attemptId,requested_reason:reason});
-      const attempt=[...attemptStore.values()].find(item=>item.attemptId===attemptId);if(!attempt)return wait({status:'already_submitted'});if(legacyPayload&&window.EXAI_SUBMISSIONS?.submit)await window.EXAI_SUBMISSIONS.submit(legacyPayload);attempt.status='submitted';return wait({status:'submitted',reason,reviewAllowed:attempt.reviewAllowed})
+      throw new Error('The attempt could not be linked to the database.');
     }
   };
-  const demoReset={async preview(){return wait({generatedPapers:4,assignments:8,attempts:14,responses:126,practiceRecords:9,results:11,preserved:{organisations:true,roles:true,memberships:true,classes:true,baselineDummyRoster:true}})},async confirm(){return wait({state:'backend_rpc_pending'})}};
+  const demoReset={async preview(){return callRpc('preview_demo_data_reset',{})},async confirm(){return callRpc('reset_demo_data',{})}};
   const adminLearningReset={
     previewRpc:'preview_admin_learning_reset',confirmRpc:'admin_reset_learning_item',
-    async preview({attemptId,administratorMembershipId}={}){if(!attemptId||!administratorMembershipId)throw new Error('A linked attempt and administrator membership are required.');const client=backend();if(client&&isUuid(attemptId)&&isUuid(administratorMembershipId)){const {data,error}=await client.rpc(this.previewRpc,{requested_attempt_id:attemptId,requested_administrator_membership_id:administratorMembershipId});if(error)throw error;return data}return wait({attemptId,invalidationCopy:'The saved responses, submission, result, and derived performance contribution for this attempt will be invalidated.',availabilityCopy:'The assignment will remain available as Not started when its availability rules still allow access.'})},
-    async confirm({attemptId,administratorMembershipId,reason}={}){if(!attemptId||!administratorMembershipId||!reason)throw new Error('The secured reset request is incomplete.');const client=backend();if(client&&isUuid(attemptId)&&isUuid(administratorMembershipId)){const {data,error}=await client.rpc(this.confirmRpc,{requested_attempt_id:attemptId,requested_administrator_membership_id:administratorMembershipId,requested_reason:reason});if(error)throw error;return data}discardedAttempts.add(attemptId);Object.values(resultFixtures).flat().filter(item=>item.attemptId===attemptId).forEach(item=>invalidatedSnapshots.add(item.resultId));return wait({state:'reset',attemptId})}
+    async preview({attemptId,administratorMembershipId}={}){if(!isUuid(attemptId)||!isUuid(administratorMembershipId))throw new Error('A database-backed attempt and administrator membership are required.');return callRpc(this.previewRpc,{requested_attempt_id:attemptId,requested_administrator_membership_id:administratorMembershipId})},
+    async confirm({attemptId,administratorMembershipId,reason}={}){if(!isUuid(attemptId)||!isUuid(administratorMembershipId)||!reason)throw new Error('The secured reset request is incomplete.');return callRpc(this.confirmRpc,{requested_attempt_id:attemptId,requested_administrator_membership_id:administratorMembershipId,requested_reason:reason})}
   };
   window.EXAI_ADAPTERS=Object.freeze({auth:{accountContext,accountResetCapabilities},studentAssignments,studentPractice,studentResults,studentPerformance,assessmentPlayer,teacherClasses,teacherStudents,teacherResults,teacherPerformance,demoReset,adminLearningReset});
 })();

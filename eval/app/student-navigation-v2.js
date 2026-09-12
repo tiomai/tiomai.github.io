@@ -1,4 +1,4 @@
-(function(){if(!window.EXAI_CONTEXT_READY&&!document.querySelector('script[src$="app/context-bootstrap.js"]')){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js':'app/context-bootstrap.js';document.head.append(script)}})();
+(function(){if(!window.EXAI_CONTEXT_READY&&!document.querySelector('script[src*="app/context-bootstrap.js"]')){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js?v=20260912-4':'app/context-bootstrap.js?v=20260912-4';document.head.append(script)}})();
 window.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.nav,.sidebar nav').forEach(nav=>{
     const links=[...nav.querySelectorAll('a')];
