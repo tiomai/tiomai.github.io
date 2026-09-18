@@ -2,12 +2,20 @@
   const escape=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const grouped=q=>['grouped_cloze','shared_audio_grouped_mixed'].includes(q?.questionLayout)&&q.parts?.length;
   const supportingInstruction=(q,fallback)=>{const value=String(q?.instruction||'').trim(),prompt=String(q?.prompt||'').trim();return value?(value===prompt?'':value):fallback};
+  const mediaMarkup=images=>(images||[]).map(image=>`<figure class="question-media-item"${image.ref?` data-media-ref="${escape(image.ref)}"`:''}><img src="${escape(image.src)}" alt="${escape(image.alt||'Question image')}" loading="lazy">${image.caption?`<figcaption>${escape(image.caption)}</figcaption>`:''}</figure>`).join('');
+  const renderMedia=(q,prompt,passage)=>{
+    const questionHost=prompt?.parentElement;
+    if(questionHost){let host=questionHost.querySelector(':scope > .question-media'),markup=mediaMarkup(q?.media?.stem);if(markup){if(!host){host=document.createElement('div');host.className='question-media';prompt.after(host)}host.innerHTML=markup}else host?.remove()}
+    const sourceHost=passage?.parentElement;
+    if(sourceHost){let host=sourceHost.querySelector(':scope > .stimulus-media'),markup=mediaMarkup(q?.media?.stimulus);if(markup){if(!host){host=document.createElement('div');host.className='stimulus-media';passage.after(host)}host.innerHTML=markup}else host?.remove()}
+  };
   const labels=q=>{const matches=String(q.supplementary||'').split(/\n+/).map(row=>row.trim()).filter(row=>/^[①②③④⑤⑥⑦⑧⑨⑩]/.test(row));return q.parts.map((part,index)=>part.label&&!/^Part \d+$/i.test(part.label)?part.label:(matches[index]?.replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/,'')||`Part ${index+1}`))};
   function render({question:q,elements,flow='paper',formatPassage}){
     if(!q||!elements)return {rendered:false};
     const {prompt,passage,options,questionType,instruction,next}=elements,answers=q.answer&&typeof q.answer==='object'&&!Array.isArray(q.answer)?q.answer:{};
     if(prompt)prompt.textContent=q.prompt||'';
     if(passage&&q.passage)passage.innerHTML=typeof formatPassage==='function'?formatPassage(q.passage):escape(q.passage).replace(/\n+/g,'<br>');
+    renderMedia(q,prompt,passage);
     if(q.isShort&&!grouped(q)){
       if(questionType)questionType.textContent='SHORT ANSWER';if(instruction)instruction.textContent=supportingInstruction(q,q.supplementary||'Type your answer.');
       if(options)options.innerHTML=`<textarea class="short-answer" rows="4" aria-label="${escape(q.prompt||'Answer')}" placeholder="Type your answer" ${q.submitted?'disabled':''}>${escape(q.answer||'')}</textarea>`;

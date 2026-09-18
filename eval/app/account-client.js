@@ -1,13 +1,11 @@
-(function(){if(!window.EXAI_CONTEXT_READY&&!document.querySelector('script[src*="app/context-bootstrap.js"]')){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js?v=20260918-3':'app/context-bootstrap.js?v=20260918-3';document.head.append(script)}})();
+(function(){if(!window.EXAI_CONTEXT_READY&&!document.querySelector('script[src*="app/context-bootstrap.js"]')){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js?v=20260918-6':'app/context-bootstrap.js?v=20260918-6';document.head.append(script)}})();
 window.addEventListener('DOMContentLoaded', async () => {
   const form = document.querySelector('#passwordForm');
   const emailField = document.querySelector('#accountEmail');
   const message = document.querySelector('#passwordMessage');
   if (!form || !message) return;
 
-  const config = window.EXAI_SUPABASE_CONFIG || {};
-  const ready = Boolean(window.supabase?.createClient && config.url && config.publishableKey);
-  const client = ready ? window.supabase.createClient(config.url, config.publishableKey) : null;
+  const client = window.EXAI_GET_SUPABASE_CLIENT?.() || null;
   let user = null;
 
   if (client) {

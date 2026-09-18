@@ -35,7 +35,7 @@ const syncPlayerLaunchState=()=>{
   coverTitle.textContent=displayTitle;
   const headerTitle=document.querySelector('.title strong'),headerMeta=document.querySelector('.title span');
   if(headerTitle)headerTitle.textContent=displayTitle;
-  if(headerMeta)headerMeta.textContent=`${displaySubject} · ${isPractice?'Practice':'School assessment'}`;
+  if(headerMeta)headerMeta.textContent=`${displaySubject} · ${isPractice?'Practice':'Assessment'}`;
   document.title=`${displayTitle} · EXAI`;
   coverEyebrow.textContent=isPractice?'PRACTICE':'ASSESSMENT';
   coverIntro.textContent=isPractice?(practiceMode==='leisure'?'Work at your own pace. Feedback appears after each answer.':'Complete this timed pack. Your score appears after submission.'):'Review the paper details and plan your time before starting.';
@@ -43,7 +43,7 @@ const syncPlayerLaunchState=()=>{
   const timing=isPractice&&practiceMode==='leisure'?'No time limit':minutes?`${minutes} minutes`:'Loading activity…';
   const timingHelp=isPractice&&practiceMode==='leisure'?'Leave and resume whenever you need to.':minutes?'The activity submits automatically when time ends.':'The timer starts after the activity is ready.';
   ruleGrid.innerHTML=`<div class="rule final-rule"><small>${isPractice?'PACE':'TIME LIMIT'}</small><b>${timing}</b><span>${timingHelp}</span></div><div class="rule final-rule"><small>TOTAL QUESTIONS</small><b>${count?`${count} questions`:'Loading questions…'}</b><span>${count?'You can move between questions and revisit saved answers.':'The question navigator appears when loading completes.'}</span></div>`;
-  coverFoot.textContent=isPractice?(practiceMode==='leisure'?'Your progress is saved, but Leisure work is not scored in Results.':'Complete the pack to save its score in Challenge Results.'):'Submitted assessments are marked automatically unless your school requires review.';
+  coverFoot.textContent=isPractice?(practiceMode==='leisure'?'Your completed activity and feedback are saved in Leisure Results. Leisure work is not scored in Performance.':'Complete the pack to save its score in Challenge Results.'):'Submitted assessments are marked automatically unless your school requires review.';
   start.textContent=isPractice?'Start practice':'Start assessment';
   start.disabled=!window.EXAI_ATTEMPT_UI;
   const timer=document.querySelector('.timer');if(timer){if(isPractice||!minutes)timer.style.display='none';else timer.textContent=`◷ ${minutes}:00`}

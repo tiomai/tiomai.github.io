@@ -1,16 +1,13 @@
 (function(){
   const wait=value=>Promise.resolve(structuredClone(value));
   const previewContext={membershipId:'preview-student',organisationId:'preview-organisation',organisationName:'EXAI Preview',role:'student',classes:[],capabilities:{canViewStudents:false,canViewResults:true,canAssign:false,canReview:false}};
-  let backendClient;
   // Postgres accepts UUID-shaped identifiers regardless of RFC version/variant
   // bits. Staging assignment IDs are deterministic UUID casts, so validating
   // those bits here incorrectly strips a valid student assignment from the
   // attempt request and makes the player fall back to practice entitlement.
   const isUuid=value=>/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(value||'');
   const backend=()=>{
-    const config=window.EXAI_SUPABASE_CONFIG||{};
-    if(!window.supabase?.createClient||!config.url||!config.publishableKey)return null;
-    return backendClient||(backendClient=window.supabase.createClient(config.url,config.publishableKey));
+    return window.EXAI_GET_SUPABASE_CLIENT?.()||null;
   };
   const previewOnly=()=>!backend();
   const callRpc=async(name,args)=>{
@@ -87,15 +84,41 @@
   const studentPractice={async listEntitled(){const data=await callRpc('list_entitled_packs',{requested_mode:'challenge'});return {items:(data||[]).map(item=>({packId:item.pack_id,title:item.pack_title,subject:item.subject_title,questionCount:item.question_count??null,estimatedMinutes:item.time_limit_seconds?Math.ceil(item.time_limit_seconds/60):null,state:item.access_state,attemptId:item.active_attempt_id,action:item.access_state==='time_up'?{kind:'time_up',label:"Time's up"}:{kind:item.access_state==='in_progress'?'continue':'start',label:item.access_state==='in_progress'?'Continue':'Start'}})),subscription:{state:'active'}}}};
   const studentResults={async list({population='released',cursor=null}={}){const data=await callRpc('list_student_results',{requested_population:population,requested_cursor:cursor});return data||{population,items:[],pageInfo:{endCursor:null,hasNextPage:false}}}};
   const studentPerformance={async get({subject='english'}={}){return (await callRpc('get_student_performance',{requested_subject:subject}))||{metrics:null,monthlySummary:[],trend:[],englishSkills:[],mathTopics:[],insights:[],dataConfidence:null,assessmentResults:[],viewer:{canViewAssessmentResults:false}}}};
-  const activeTeacherMembershipId=async()=>{
-    const context=await accountContext.get(),membershipId=context?.activeContext?.membershipId;
-    if(!isUuid(membershipId))throw new Error('An active database-backed teacher membership is required.');
-    return membershipId;
+  const activeTeacherContext=async()=>{
+    const context=await accountContext.get(),active=context?.activeContext,membershipId=active?.membershipId;
+    if(active?.role!=='teacher'||!isUuid(membershipId))throw new Error('An active database-backed teacher membership is required.');
+    return active;
+  };
+  const activeTeacherMembershipId=async()=>(await activeTeacherContext()).membershipId;
+  const requireVisibleTeacherClass=async classId=>{
+    if(!isUuid(classId))throw new Error('A database-backed class is required.');
+    const active=await activeTeacherContext(),declared=Array.isArray(active.classes)?active.classes:[];
+    if(declared.some(item=>String(item.id??item.classId)===String(classId)))return active;
+    const visible=await teacherClasses.list();
+    if(!(visible?.items||[]).some(item=>String(item.classId)===String(classId)))throw new Error('The selected class is not visible to this teacher account.');
+    return active;
   };
   const teacherClasses={async list(){return (await callRpc('list_teacher_classes',{requested_viewer_membership_id:await activeTeacherMembershipId()}))||{items:[]}}};
   const teacherStudents={async list({classId=null}={}){const viewerMembershipId=await activeTeacherMembershipId();if(classId){return (await callRpc('list_teacher_students',{requested_class_id:classId,requested_viewer_membership_id:viewerMembershipId}))||{classId,items:[]}}const classes=await teacherClasses.list(),byId=new Map();for(const visibleClass of (classes?.items||[])){const result=await callRpc('list_teacher_students',{requested_class_id:visibleClass.classId,requested_viewer_membership_id:viewerMembershipId}),items=Array.isArray(result?.items)?result.items:[];for(const student of items){const key=student.studentId||student.studentMembershipId;if(!key)continue;const existing=byId.get(key);if(existing)existing.classIds=[...new Set([...(existing.classIds||[]),...(student.classIds||[]),visibleClass.classId])];else byId.set(key,{...student,classIds:student.classIds?.length?student.classIds:[visibleClass.classId]});}}return {classId:null,items:[...byId.values()]}}};
   const teacherResults={async list({classId=null,subject=null,state=null,cursor=null}={}){return (await callRpc('list_teacher_results',{requested_class_id:classId,requested_subject:subject,requested_state:state,requested_cursor:cursor,requested_viewer_membership_id:await activeTeacherMembershipId()}))||{items:[],pageInfo:{endCursor:null,hasNextPage:false}}}};
   const teacherPerformance={async getStudent({studentId,classId=null,membershipId=null}={}){return (await callRpc('get_teacher_student_performance',{requested_student_id:studentId,requested_class_id:classId,requested_membership_id:membershipId,requested_viewer_membership_id:await activeTeacherMembershipId()}))||{studentId,metrics:null,monthlySummary:[],trend:[],englishSkills:[],mathTopics:[],insights:[],dataConfidence:null,assessmentResults:[],viewer:{canViewAssessmentResults:true}}}};
+  const teacherDemo={
+    async listClassPerformance({classId}={}){
+      const active=await requireVisibleTeacherClass(classId);
+      if(active.isDemo!==true)return null;
+      const data=await callRpc('list_demo_class_performance',{cid:classId,viewer:active.membershipId});
+      if(!data||String(data.classId)!==String(classId))throw new Error('Demo class performance returned an invalid class projection.');
+      return {...data,students:Array.isArray(data.students)?data.students:[]};
+    },
+    async getHistoryResponses({historyId,classId}={}){
+      const active=await requireVisibleTeacherClass(classId);
+      if(active.isDemo!==true)return null;
+      if(!isUuid(historyId))throw new Error('A database-backed demo history record is required.');
+      const data=await callRpc('get_demo_display_history_responses',{hid:historyId,viewer:active.membershipId});
+      if(!data||String(data.classId)!==String(classId)||String(data.historyId)!==String(historyId))throw new Error('Demo response history returned an invalid class projection.');
+      return {...data,questions:Array.isArray(data.questions)?data.questions:[]};
+    }
+  };
   const teacherReview={async getQuestion({attemptId,position,classId}={}){
     classId=classId||new URLSearchParams(location.search).get('classId');
     if(!isUuid(attemptId)||!isUuid(classId)||!Number.isInteger(position)||position<1)throw new Error('Teacher review requires a valid attempt, class and question position.');
@@ -135,5 +158,5 @@
     async preview({attemptId,administratorMembershipId}={}){if(!isUuid(attemptId)||!isUuid(administratorMembershipId))throw new Error('A database-backed attempt and administrator membership are required.');return callRpc(this.previewRpc,{requested_attempt_id:attemptId,requested_administrator_membership_id:administratorMembershipId})},
     async confirm({attemptId,administratorMembershipId,reason}={}){if(!isUuid(attemptId)||!isUuid(administratorMembershipId)||!reason)throw new Error('The secured reset request is incomplete.');return callRpc(this.confirmRpc,{requested_attempt_id:attemptId,requested_administrator_membership_id:administratorMembershipId,requested_reason:reason})}
   };
-  window.EXAI_ADAPTERS=Object.freeze({auth:{accountContext,accountResetCapabilities},studentAssignments,studentPractice,studentResults,studentPerformance,assessmentPlayer,teacherClasses,teacherStudents,teacherResults,teacherPerformance,teacherReview,demoReset,adminLearningReset});
+  window.EXAI_ADAPTERS=Object.freeze({auth:{accountContext,accountResetCapabilities},studentAssignments,studentPractice,studentResults,studentPerformance,assessmentPlayer,teacherClasses,teacherStudents,teacherResults,teacherPerformance,teacherDemo,teacherReview,demoReset,adminLearningReset});
 })();

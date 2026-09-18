@@ -9,7 +9,13 @@
   const fail=(position,message)=>{throw new Error(`Question ${position||'—'} ${message}`)};
   const scalar=value=>typeof value==='string'||typeof value==='number'?String(value).trim():'';
   const field=(value,names)=>{if(value==null)return'';if(typeof value==='string'||typeof value==='number')return scalar(value);for(const name of names){const found=scalar(value?.[name]);if(found)return found}return''};
-  const content=value=>field(value,['text','value','content','html','title','instruction']);
+  const content=value=>field(value,['text','value','content','html','title','instruction','guidance']);
+  const normalizeImage=(image,index,scope)=>{
+    const src=typeof image==='string'?scalar(image):field(image,['src','url','path','media_path','mediaPath']);
+    if(!src)return null;
+    return {id:typeof image==='object'?(image?.id??null):null,position:Number(typeof image==='object'?(image?.position??index+1):index+1),src,alt:typeof image==='object'?field(image,['alt','alt_text','altText']):'',caption:typeof image==='object'?field(image,['caption','description']):'',ref:typeof image==='object'?field(image,['ref','reference','source_ref','sourceRef']):'',scope};
+  };
+  const normalizeImages=(images,scope)=>Array.isArray(images)?images.map((image,index)=>normalizeImage(image,index,scope)).filter(Boolean).sort((a,b)=>a.position-b.position):[];
   const stemFields=stem=>({
     instruction:field(stem,['instruction','instruction_text']),
     primaryText:field(stem,['text','primary_text','prompt','content']),
@@ -23,7 +29,8 @@
     paragraphNumber:paragraph?.paragraph_number??paragraph?.paragraphNumber??index+1,
     content:content(paragraph?.content??paragraph?.text??paragraph),
     transcript:Array.isArray(paragraph?.transcripts)?paragraph.transcripts.map(line=>({speaker:field(line,['name','speaker']),text:field(line,['text','content'])})):[],
-    audioUrl:field(paragraph,['audioUrl','audio_url','mediaPath','media_path'])||null
+    audioUrl:field(paragraph,['audioUrl','audio_url','mediaPath','media_path'])||null,
+    images:normalizeImages(paragraph?.images,'stimulus')
   });
   const blankId=option=>option?.content?.blank_id??option?.content?.blankId??option?.blank_id??option?.blankId??null;
   const normalizeOption=option=>({id:option?.id??null,position:Number(option?.position??0),blankId:blankId(option),value:content(option?.content??option)});
@@ -38,15 +45,16 @@
   };
   const normalizeResponseParts=question=>{
     const schema=question?.responseSchema??question?.response_schema??question?.answerEntry??question?.answer_entry??{};
-    const rows=Array.isArray(schema?.parts)?schema.parts:Array.isArray(schema?.blanks)?schema.blanks:[];
+    const rows=Array.isArray(schema)?schema:Array.isArray(schema?.parts)?schema.parts:Array.isArray(schema?.blanks)?schema.blanks:[];
     const aliases={choice:'single_choice',single_choice:'single_choice',radio:'single_choice',short_text:'short_text',text:'short_text',text_input:'short_text'};
-    return rows.map((part,index)=>({
+    return rows.map((part,index)=>{const responseType=field(part,['type','entryType','entry_type','control','response_type']).toLowerCase();return {
       blankId:String(part?.id??part?.blankId??part?.blank_id??index+1),
       position:Number(part?.position??index+1),
       label:field(part,['label','prompt','title']),
       instruction:field(part,['instruction','instruction_text']),
-      entryType:aliases[field(part,['type','entryType','entry_type','control','response_type']).toLowerCase()]||field(part,['type','entryType','entry_type','control','response_type']).toLowerCase()
-    })).sort((a,b)=>a.position-b.position);
+      responseType,
+      entryType:aliases[responseType]||responseType
+    }}).sort((a,b)=>a.position-b.position);
   };
   function fromAttemptItem(item,{review=false}={}){
     const position=item?.position,question=item?.question||{},layout=question.questionLayout||question.question_layout||'';
@@ -58,6 +66,8 @@
     if(!promptParts.length&&stem.instruction)promptParts.push(stem.instruction);
     if(!promptParts.length)fail(position,'has no learner-facing prompt.');
     const stimulus=question.stimulus||{},rawParagraphs=Array.isArray(stimulus?.body?.paragraphs)?stimulus.body.paragraphs:[],paragraphs=rawParagraphs.map(normalizeParagraph).sort((a,b)=>a.position-b.position);
+    const stemImages=normalizeImages(question.stem?.images,'stem');
+    const stimulusImages=[...normalizeImages(stimulus?.body?.images,'stimulus'),...normalizeImages(stimulus?.images,'stimulus'),...paragraphs.flatMap(paragraph=>paragraph.images)].filter((image,index,all)=>all.findIndex(candidate=>candidate.src===image.src&&candidate.ref===image.ref)===index);
     const options=(Array.isArray(question.options)?question.options:[]).map(normalizeOption).sort((a,b)=>a.position-b.position);
     if(options.some(option=>!option.id||!option.value))fail(position,'has an option without a stable ID or visible value.');
     const answerEntries=normalizeResponseParts(question);
@@ -72,7 +82,7 @@
     const parts=(multi?declaredBlankIds:[declaredBlankIds[0]??'1']).map((id,index)=>{
       const entry=answerEntries.find(part=>String(part.blankId)===String(id))||{};
       const partOptions=multi?options.filter(option=>String(option.blankId)===String(id)):options;
-      return {blankId:String(id),position:entry.position||index+1,label:entry.label||`Part ${index+1}`,instruction:entry.instruction,entryType:entry.entryType||(partOptions.length?'single_choice':'short_text'),options:partOptions};
+      return {blankId:String(id),position:entry.position||index+1,label:entry.label||`Part ${index+1}`,instruction:entry.instruction,responseType:entry.responseType||entry.entryType||(partOptions.length?'single_choice':'short_text'),entryType:entry.entryType||(partOptions.length?'single_choice':'short_text'),options:partOptions};
     });
     if(layout.endsWith('single_choice')||layout==='standalone_language_single_choice'){
       if(options.length<2||options.length>6)fail(position,`has ${options.length} answer choices; expected 2–6.`);
@@ -94,7 +104,8 @@
       version:VERSION,attemptItemId:item?.attemptItemId??item?.attempt_item_id??null,questionId:question.id,contentRevision:question.contentRevision??question.content_revision??null,
       questionLayout:layout,questionType:question.questionType??question.question_type??'',points:Number(question.points??item?.points??1),
       instruction:stem.instruction,supplementary:stem.supplementaryText,prompt:promptParts.join('\n\n'),paragraphNumber:stem.paragraphNumber,
-      stimulus:{id:question.stimulusId??question.stimulus_id??null,type:stimulus.type??stimulus.stimulusType??null,title:field(stimulus,['title']),paragraphs,audioSrc},
+      stimulus:{id:question.stimulusId??question.stimulus_id??null,type:stimulus.type??stimulus.stimulusType??null,title:field(stimulus,['title']),paragraphs,audioSrc,images:stimulusImages},
+      media:{stem:stemImages,stimulus:stimulusImages},
       parts,options,answer:item?.response??null,bookmark:Boolean(item?.bookmark??item?.flagged),answerKey:answerKeyAllowed?keyParts:null,
       explanation:answerKeyAllowed?content(question.explanation):'',review:Boolean(review),status:item?.status??null,assistanceUsed:Boolean(item?.assistanceUsed??item?.assistance_used)
     };

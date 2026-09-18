@@ -6,7 +6,7 @@
     const count=Number.parseInt(completed.textContent,10)||0;
     if(!count)return;
     const challenge=document.querySelector('.source-tabs [data-source="challenge"]')?.classList.contains('active');
-    insight.textContent=`${count} completed ${challenge?'Challenge practice pack':'school assessment'}${count===1?'':'s'} contribute to this performance view. Review the lowest-scoring skill first.`;
+    insight.textContent=`${count} completed ${challenge?'Challenge practice pack':'assessment'}${count===1?'':'s'} contribute to this performance view. Review the lowest-scoring skill first.`;
   };
   addEventListener('DOMContentLoaded',()=>{
     const host=document.querySelector('#completed');

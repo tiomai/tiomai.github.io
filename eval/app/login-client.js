@@ -6,14 +6,12 @@ window.addEventListener('DOMContentLoaded',async()=>{
   if(location.search){history.replaceState(null,'',location.pathname+location.hash)}
   let submitHandler=null;
   form.addEventListener('submit',event=>{event.preventDefault();submitHandler?.()});
-  const config=window.EXAI_SUPABASE_CONFIG||{};
-  const ready=Boolean(window.supabase?.createClient&&config.url&&config.publishableKey);
-  const client=ready?window.supabase.createClient(config.url,config.publishableKey):null;
+  const client=window.EXAI_GET_SUPABASE_CLIENT?.()||null;
   if(!client){message.textContent='Sign-in connection is being configured for staging.';form.querySelectorAll('input,button').forEach(item=>item.disabled=true);return}
   const destinationFor=async user=>{
     const email=String(user?.email||'').toLowerCase();
     localStorage.setItem('exai_demo_user','standard');
-    if(!window.EXAI_CONTEXT_READY){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js?v=20260918-4':'app/context-bootstrap.js?v=20260918-4';document.head.append(script);await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject})}
+    if(!window.EXAI_CONTEXT_READY){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/context-bootstrap.js?v=20260918-6':'app/context-bootstrap.js?v=20260918-6';document.head.append(script);await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject})}
     const provider=await window.EXAI_CONTEXT_READY,context=await provider.load(true);return provider.defaultHref(context.activeContext);
   };
   submitHandler=async()=>{
