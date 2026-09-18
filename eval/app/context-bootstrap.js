@@ -1,7 +1,7 @@
 (function(){
   if(window.EXAI_CONTEXT_READY)return;
   const localStaging=['localhost','127.0.0.1'].includes(location.hostname);
-  const localBuild='20260914-9';
+  const localBuild='20260918-4';
   window.EXAI_FRESH_LOCAL_URL=href=>{
     if(!localStaging)return href;
     const url=new URL(href,location.href);
