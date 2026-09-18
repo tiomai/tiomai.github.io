@@ -1,4 +1,4 @@
-const performanceRendererSrc=location.pathname.includes('/eval/')?'/eval/app/performance-teacher-renderers.js':'app/performance-teacher-renderers.js';
+const performanceRendererSrc=location.pathname.includes('/eval/')?'/eval/app/performance-teacher-renderers.js?v=20260918-2':'app/performance-teacher-renderers.js?v=20260918-2';
 const loadPerformanceRenderer=()=>{if(!window.EXAI_CONTEXT_READY)return setTimeout(loadPerformanceRenderer,0);Promise.resolve(window.EXAI_CONTEXT_READY).then(()=>{if(document.querySelector('script[data-performance-renderers]'))return;const script=document.createElement('script');script.src=performanceRendererSrc;script.dataset.performanceRenderers='true';document.head.append(script)})};loadPerformanceRenderer();
 window.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.access-note').forEach(note=>{if(note.textContent.includes('School students see'))note.remove()});
