@@ -204,7 +204,7 @@ section{padding:18px}
 .form-message{min-height:20px;color:var(--muted);font-size:var(--type-label);line-height:1.45}
 .state-grid{grid-template-columns:repeat(4,1fr)}
 .state-grid>article{display:grid;align-content:center;min-height:150px;gap:7px}
-.loading-state i{height:12px;border-radius:7px;background:linear-gradient(90deg,var(--surface-2),var(--line),var(--surface-2))}
+.context-state-sample{position:relative;padding-left:66px!important}.state-spinner{position:absolute;left:24px;top:50%;width:26px;height:26px;margin-top:-13px;border:3px solid color-mix(in srgb,var(--brand) 22%,transparent);border-top-color:var(--brand);border-radius:50%;animation:playbook-spin .75s linear infinite}.context-state-sample p{margin:0}@keyframes playbook-spin{to{transform:rotate(360deg)}}
 .error-state{border-color:color-mix(in srgb,var(--bad) 35%,var(--line))!important}
 .component-contract{margin:0 0 16px;padding:13px 15px;border-left:4px solid var(--brand);border-radius:7px;background:var(--brand-soft);color:var(--muted);font-size:var(--type-body);line-height:1.5}
 .drawer-sample{display:grid;gap:16px}
