@@ -9,7 +9,7 @@
     const audio=new Audio(card.dataset.audioSrc||sourceForPage());
     audio.preload='metadata';
     const playsByQuestion=new Map();
-    let activeQuestion='',playing=false,error='',fallbackAttempted=false;
+    let activeQuestion='',playing=false,error='';
     const questionKey=()=>document.querySelector('#questionCount,.question-count,.question-meta b')?.textContent?.trim()||'listening-question';
     const stateFor=key=>playsByQuestion.get(key)||{remaining:Number(card.dataset.maxPlays||2)};
     const paint=()=>{
@@ -24,7 +24,7 @@
       status.className='replays audio-state';
       status.innerHTML=`<b>${state.remaining} play${state.remaining===1?'':'s'} remaining</b><span>${error||'Selecting Play uses one play. You can stop the recording, but it cannot be paused.'}</span>`;
     };
-    const syncSource=()=>{const next=typeof questions!=='undefined'?questions[typeof current==='number'?current:0]?.audioSrc:null,source=next||card.dataset.audioSrc||sourceForPage();if(audio.src!==new URL(source,location.href).href){audio.pause();audio.src=source;audio.load();error='';fallbackAttempted=source===sourceForPage()}};
+    const syncSource=()=>{const next=typeof questions!=='undefined'?questions[typeof current==='number'?current:0]?.audioSrc:null,source=next||card.dataset.audioSrc||sourceForPage();if(audio.src!==new URL(source,location.href).href){audio.pause();audio.src=source;audio.load();error=''}};
     const stop=()=>{audio.pause();audio.currentTime=0;playing=false;activeQuestion='';paint()};
     button.onclick=async()=>{
       syncSource();const key=questionKey(),state=stateFor(key);
@@ -36,7 +36,7 @@
     audio.addEventListener('timeupdate',paint);
     audio.addEventListener('loadedmetadata',paint);
     audio.addEventListener('ended',stop);
-    audio.addEventListener('error',()=>{const fallback=sourceForPage(),fallbackUrl=new URL(fallback,location.href).href;if(!fallbackAttempted&&audio.src!==fallbackUrl){playing=false;activeQuestion='';fallbackAttempted=true;audio.src=fallback;audio.load();error='';paint();return}playing=false;activeQuestion='';error='The listening recording could not be loaded.';paint()});
+    audio.addEventListener('error',()=>{playing=false;activeQuestion='';error='The listening recording could not be loaded.';paint()});
     const counter=document.querySelector('#questionCount,.question-count');
     if(counter)new MutationObserver(()=>{syncSource();if(playing&&activeQuestion!==questionKey())stop();else paint()}).observe(counter,{childList:true,subtree:true,characterData:true});
     addEventListener('pagehide',()=>audio.pause());
