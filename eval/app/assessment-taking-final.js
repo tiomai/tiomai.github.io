@@ -1,9 +1,9 @@
-(function(){if(!window.EXAI_ATTEMPT_UI){const script=document.createElement('script');script.src=location.pathname.includes('/eval/')?'/eval/app/attempt-adapter-bridge.js':'app/attempt-adapter-bridge.js';document.head.append(script)}})();
+(function(){if(!window.EXAI_ATTEMPT_UI){const script=document.createElement('script');script.src=(location.pathname.includes('/eval/')?'/eval/app/attempt-adapter-bridge.js':'app/attempt-adapter-bridge.js')+'?v=20260914-2';document.head.append(script)}})();
 window.addEventListener('DOMContentLoaded',()=>{
   const enhanceCover=()=>{
     if(flow==='paper'){
       coverIntro.textContent='Check the paper details and plan your time before you start.';
-      ruleGrid.innerHTML=`<div class="rule final-rule"><small>TIME LIMIT</small><b>42 minutes</b><span>The paper submits when time ends.</span></div><div class="rule final-rule"><small>TOTAL QUESTIONS</small><b>10 questions</b><span>You can move between questions.</span></div><div class="rule final-rule important"><small>IMPORTANT</small><b>Review before submitting</b><span>Check blanks and bookmarks on the final review.</span></div>`;
+      ruleGrid.innerHTML=`<div class="rule final-rule"><small>TIME LIMIT</small><b>Loading assignment…</b><span>The paper submits when its configured time ends.</span></div><div class="rule final-rule"><small>TOTAL QUESTIONS</small><b>Loading pack…</b><span>You can move between loaded questions.</span></div><div class="rule final-rule important"><small>IMPORTANT</small><b>Review before submitting</b><span>Check blanks and bookmarks on the final review.</span></div>`;
     }
   };
   enhanceCover();flowMode?.addEventListener('change',()=>setTimeout(enhanceCover));
@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   showReview=function(isPractice=false){originalReview(isPractice);answeredSummary.className='answered-count';missingSummary.className='unanswered-count'};
   if(typeof reviewMode!=='undefined'&&reviewMode){
     const reviewRender=render;
-    render=function(){reviewRender();const q=questions[current],buttons=[...options.querySelectorAll('.option')];buttons.forEach((button,index)=>{button.classList.remove('review-correct','review-wrong');if(index===q.correct)button.classList.add('review-correct');if(q.answer===index&&q.answer!==q.correct)button.classList.add('review-wrong')});const correct=q.answer===q.correct;if(reviewMode==='result'){feedbackPanel.classList.toggle('result-correct',correct);feedbackPanel.classList.toggle('result-incorrect',!correct);feedbackPanel.querySelector(':scope>b').textContent=correct?'Correct':'Incorrect';if(correct){const grid=feedbackPanel.querySelector('.feedback-grid');if(grid)grid.innerHTML=`<div><small>YOUR ANSWER</small><strong>${q.options?.[q.answer]||q.answer}</strong></div>`}}};render();
+    render=function(){reviewRender();const q=questions[current],buttons=[...options.querySelectorAll('.option')];buttons.forEach((button,index)=>{button.classList.remove('review-correct','review-wrong');if(index===q.correct)button.classList.add('review-correct');if(q.answer===index&&q.answer!==q.correct)button.classList.add('review-wrong')});const correct=q.answer===q.correct;feedbackPanel.classList.add('open');feedbackPanel.innerHTML=`<b>${correct?'Correct':'Incorrect'}</b><div class="feedback-grid"><div><small>YOUR ANSWER</small><strong>${q.options?.[q.answer]||q.answer||'No answer submitted'}</strong></div><div><small>CORRECT ANSWER</small><strong>${q.options?.[q.correct]||q.correct||'Unavailable'}</strong></div></div>`;feedbackPanel.classList.toggle('result-correct',correct);feedbackPanel.classList.toggle('result-incorrect',!correct)};render();
   }
 });
 
