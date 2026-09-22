@@ -4,7 +4,7 @@ function filter(){let count=0;const q=search.value.trim().toLowerCase();for(cons
 search.addEventListener('input',filter);
 document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{selected=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});filter();}));
 const modal=document.querySelector('dialog');
-document.querySelectorAll('.pin-media').forEach(b=>b.addEventListener('click',()=>{modal.querySelector('img').src=b.dataset.src;modal.querySelector('img').alt=b.dataset.title;modal.querySelector('h2').textContent=b.dataset.title;modal.querySelector('a').href=b.dataset.src;modal.showModal();}));
+document.querySelectorAll('.pin-media').forEach(b=>b.addEventListener('click',()=>{modal.querySelector('img').src=b.dataset.src;modal.querySelector('img').alt=b.dataset.title;modal.querySelector('h2').textContent=b.dataset.title;modal.querySelector('a').href='https://drive.google.com/drive/folders/1O-DoyQILHphHDRthStbN0SGrFFkLFman';modal.querySelector('a').removeAttribute('download');modal.querySelector('a').textContent='Open in Google Drive ↗';modal.showModal();}));
 modal.querySelector('button').addEventListener('click',()=>modal.close());
 modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)modal.close();}});
 filter();
