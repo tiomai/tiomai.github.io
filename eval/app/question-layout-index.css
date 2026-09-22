@@ -35,6 +35,11 @@ html {
 
 .subquestions { display: grid; gap: 14px; }
 .subquestions section { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--line); border-radius: 10px; }
+.subquestions .group-question { gap: 12px; }
+.subquestions .group-question > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.subquestions .group-question > header h3 { flex: 1; }
+.marks-pill { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; padding: 4px 9px; border: 1px solid var(--brand); border-radius: 999px; background: var(--brand-soft); color: var(--brand); font-size: .72rem; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.frame-marks { margin-left: auto; }
 .subquestions h3 { margin: 0; font-size: 1rem; }
 .subquestions select,
 .subquestions input,
@@ -82,6 +87,7 @@ html {
 .question-composition { grid-template-columns: minmax(320px, .93fr) minmax(380px, 1.07fr); min-height: 600px; overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .stimulus { min-width: 0; padding: 31px 34px; border-right: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 94%, var(--brand-soft)); }
 .response { min-width: 0; padding: 36px 42px; background: var(--surface); }
+.response-marks { display: flex; width: max-content; margin: -10px 0 18px auto; }
 .source-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
 .source-head h3 { margin: 0; font-size: 1.08rem; }
 .content-type { padding: 6px 9px; border-radius: 6px; background: var(--brand-soft); color: var(--brand); font-size: .7rem; font-weight: 700; letter-spacing: .05em; }
@@ -176,12 +182,16 @@ html {
 .group-review.answer-feedback-correct { background: var(--answer-correct-bg); color: var(--answer-correct-text); }
 .group-review.answer-feedback-incorrect { background: var(--answer-wrong-bg); color: var(--answer-wrong-text); }
 .group-review-summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+.group-review-status { display: flex; align-items: center; gap: 9px; }
 .group-review-summary h4 { margin: 0; color: inherit; font-size: 1rem; }
 .group-review-summary > b { color: var(--muted); font-size: .78rem; }
 .group-review-list { display: grid; gap: 10px; }
 .group-review-item { padding-top: 12px; border-top: 1px solid var(--answer-divider); }
-.group-review-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.group-review-heading { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
 .group-review-heading h5 { margin: 0; font-size: .85rem; }
+.group-review-heading .review-state-icon { margin-left: auto; }
+.group-review-item.is-correct .group-review-heading .marks-pill { color: var(--answer-correct-text); border-color: var(--answer-correct-border); background: var(--answer-correct-bg); }
+.group-review-item.is-wrong .group-review-heading .marks-pill { color: var(--answer-wrong-text); border-color: var(--answer-wrong-border); background: var(--answer-wrong-bg); }
 .group-review-item.is-correct .group-review-heading h5,
 .group-review-item.is-correct .group-review-heading span { color: var(--answer-correct-text); }
 .group-review-item.is-wrong .group-review-heading h5,
