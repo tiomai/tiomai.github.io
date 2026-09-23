@@ -13,7 +13,7 @@
     <path id="p-right-lantern" d="M1035 262 1245 255 1254 555 1028 555Z"/>
     <path id="p-fan" d="M885 38 1215 35 1220 275 875 275Z"/>
     <path id="p-sun-fuji" d="M345 65 895 60 900 370 340 372Z"/>
-    <path id="p-title" d="M235 420Q455 350 650 375Q860 370 1040 445L1025 770Q810 845 620 820Q420 845 245 790Z"/>
+    <path id="p-title" d="M224 363Q627 282 1031 363L976 735Q627 806 278 735Z"/>
     <path id="p-waves" d="M805 900 1195 900 1210 1150 790 1150Z"/>
     <path id="p-logo" d="M430 1130 825 1130 830 1248 425 1248Z"/>
     <clipPath id="c-koko"><use xlink:href="#p-koko"/></clipPath><clipPath id="c-gohanko"><use xlink:href="#p-gohanko"/></clipPath>
@@ -41,7 +41,7 @@
   <g inkscape:groupmode="layer" inkscape:label="05 Right festival lantern" id="right-lantern" style="display:none"><image width="1254" height="1254" xlink:href="layers/exact-source.png" clip-path="url(#c-right-lantern)"/><g inkscape:groupmode="layer" inkscape:label="05a Right lantern blank label" id="right-lantern-blank-label"><path d="M1068 332 Q1138 313 1204 334 L1210 482 Q1138 500 1068 478Z" fill="#fffaf4"/></g></g>
   <g inkscape:groupmode="layer" inkscape:label="04 Editable left lantern blank label" id="editable-left-lantern-label"><path d="M59 331 Q111 314 166 332 L175 452 Q118 468 59 449Z" fill="#fffaf4"/></g>
   <g inkscape:groupmode="layer" inkscape:label="05 Editable right lantern blank label" id="editable-right-lantern-label"><path d="M1068 332 Q1138 313 1204 334 L1210 482 Q1138 500 1068 478Z" fill="#fffaf4"/></g>
-  <g inkscape:groupmode="layer" inkscape:label="06 Editable title — やさしい日本語" id="exact-title"><path id="title-panel" d="M235 420Q455 350 650 375Q860 370 1040 445L1025 770Q810 845 620 820Q420 845 245 790Z" fill="#4b16b8"/><g inkscape:groupmode="layer" inkscape:label="06a Live Japanese title text" id="title-text" fill="#fffdf8" text-anchor="middle" font-family="Noto Sans JP, Hiragino Sans, Yu Gothic, sans-serif" font-weight="900"><text x="635" y="570" font-size="170" letter-spacing="-10">やさしい</text><text x="635" y="760" font-size="190" letter-spacing="-12">日本語</text></g></g>
+  <g inkscape:groupmode="layer" inkscape:label="06 Editable title — やさしい日本語" id="exact-title"><path id="title-panel" d="M224 363Q627 282 1031 363L976 735Q627 806 278 735Z" fill="#4b16b8"/><g inkscape:groupmode="layer" inkscape:label="06a Live Japanese title text" id="title-text" fill="#fffdf8" text-anchor="middle" font-family="Noto Sans JP, Hiragino Sans, Yu Gothic, sans-serif" font-weight="900"><text x="635" y="570" font-size="170" letter-spacing="-10">やさしい</text><text x="635" y="760" font-size="190" letter-spacing="-12">日本語</text></g></g>
   <g inkscape:groupmode="layer" inkscape:label="07 Koko" id="koko" style="display:none"><image width="1254" height="1254" xlink:href="layers/exact-source.png" clip-path="url(#c-koko)"/></g>
   <g inkscape:groupmode="layer" inkscape:label="08 Gohanko and shoyu bottle" id="gohanko" style="display:none"><image width="1254" height="1254" xlink:href="layers/exact-source.png" clip-path="url(#c-gohanko)"/></g>
   <g inkscape:groupmode="layer" inkscape:label="09 Rabbit and dango" id="rabbit" style="display:none"><image width="1254" height="1254" xlink:href="layers/exact-source.png" clip-path="url(#c-rabbit)"/></g>
